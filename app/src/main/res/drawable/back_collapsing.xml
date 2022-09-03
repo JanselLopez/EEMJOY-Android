@@ -5,7 +5,7 @@
         android:color = "?attr/colorPrimary"
         ></solid>
     <corners
-        android:bottomLeftRadius="20dp"
-        android:bottomRightRadius="20dp"
+        android:bottomLeftRadius="35dp"
+        android:bottomRightRadius="35dp"
         ></corners>
 </shape>

@@ -15,7 +15,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
+    <string name="welcome">Bienvenido!</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -43,8 +43,13 @@
     <string name="masculino">Masculino</string>
 
     <string name="born_date">Fecha de Nacimiento</string>
-
-
+    <string name="hola">Hola,</string>
+    <string name="select_client">Selecciona la localidad</string>
+    <string name="agregar_lectura">Agregar Lectura</string>
+    <string name="lecturas">Lecturas</string>
+    <string name="pendiente">Pendiente</string>
+    <string name="factura">Imprimir Factura</string>
+    <string name="lectura">Lectura</string>
 
 
 </resources>

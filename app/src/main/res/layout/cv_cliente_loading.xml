@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView3"
+        android:id="@+id/tvContador"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

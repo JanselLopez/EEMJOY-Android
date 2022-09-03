@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jansellopez.eemjoy.databinding.ActivityLoginBinding
-import com.jansellopez.eemjoy.ui.register.RegisterActivity
+import com.jansellopez.eemjoy.ui.home.HomeActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     private val binding:ActivityLoginBinding by lazy{ActivityLoginBinding.inflate(layoutInflater)}
@@ -19,8 +21,8 @@ class LoginActivity : AppCompatActivity() {
 
         screenSplash.setKeepOnScreenCondition{false}
 
-        binding.tvRegister.setOnClickListener {
-            startActivity(Intent(this,RegisterActivity::class.java))
+        binding.btnLogin.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
         }
     }
 }

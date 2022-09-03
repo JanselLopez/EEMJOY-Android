@@ -22,11 +22,11 @@
     <style name="Theme.EEMJOY.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="subheader1">
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="subheader2">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Theme.EEMJOY.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -37,5 +37,15 @@
         </item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.EEMJOY</item>
+    </style>
+    
+    <style name="BottomSheetDialogTheme"
+        parent="Theme.Design.BottomSheetDialog"
+        >
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>
