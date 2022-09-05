@@ -16,7 +16,9 @@ interface UserApiClient {
     @GET("direcciones")
     fun getZones(@Header("Authorization") auth:String):Call<ResponseZone>
 
-    @GET("clientes")
-    fun getClients(@Header("Authorization") auth:String):Call<ResponseClient>
+    @GET("clientes/{city}/{zone}")
+    fun getClients(@Header("Authorization") auth:String,
+                   @Path("city") city:Int,
+                   @Path("zone") zone:Int):Call<ResponseClient>
 
 }
