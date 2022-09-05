@@ -1,10 +1,13 @@
 package com.jansellopez.eemjoy.ui.home
 
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jansellopez.eemjoy.core.TokenRepository
 import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.databinding.ActivityHomeBinding
 import com.jansellopez.eemjoy.ui.home.adapter.CityAdapter
@@ -28,12 +31,12 @@ class HomeActivity : AppCompatActivity() {
 
         binding.rvCities.layoutManager = GridLayoutManager(this,2)
 
-        val token = Token(bundle.getString("token",""),bundle.getString("type",""))
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-            homeViewModel.onCreate(token)
+        homeViewModel.onCreate(TokenRepository.getToken(),connectivityManager)
 
         homeViewModel.cities.observe(this,{
-            binding.rvCities.adapter = CityAdapter(it,token)
+            binding.rvCities.adapter = CityAdapter(it,TokenRepository.getToken())
         })
     }
 }

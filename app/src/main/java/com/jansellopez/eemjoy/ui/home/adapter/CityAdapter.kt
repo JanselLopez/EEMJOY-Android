@@ -33,8 +33,6 @@ class CityAdapter(
                 binding.cvCity.setOnClickListener {
                     val i = Intent(context,ZonesActivity::class.java)
                     i.putExtra("city",this.id)
-                    i.putExtra("type",token.token_type)
-                    i.putExtra("token",token.access_token)
                     context.startActivity(i)
                 }
             }

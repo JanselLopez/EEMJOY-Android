@@ -43,6 +43,11 @@ class UserService @Inject constructor(
         apiClient.getZones("${token.token_type} ${token.access_token}").await().zones
     }
 
+    suspend fun getClients(token: Token):List<ClientNetwork> = withContext(Dispatchers.IO){
+        HttpsTrustManager.allowAllSSL()
+        apiClient.getClients("${token.token_type} ${token.access_token}").await().clients
+    }
+
 
 
 

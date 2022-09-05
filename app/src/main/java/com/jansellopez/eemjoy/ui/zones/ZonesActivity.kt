@@ -1,9 +1,12 @@
 package com.jansellopez.eemjoy.ui.zones
 
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jansellopez.eemjoy.core.TokenRepository
 import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.databinding.ActivityZonesBinding
 import com.jansellopez.eemjoy.ui.zones.adapter.ZoneAdapter
@@ -24,9 +27,10 @@ class ZonesActivity : AppCompatActivity() {
 
         val bundle = intent.extras
         val city = bundle!!.getInt("city")
-        val type = bundle.getString("type")
-        val body = bundle.getString("token")
-        zonesViewModel.onCreate(city?:1, Token(body?:"",type?:""))
+
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        zonesViewModel.onCreate(city, TokenRepository.getToken(),connectivityManager)
 
         binding.rvZones.layoutManager = LinearLayoutManager(this)
 

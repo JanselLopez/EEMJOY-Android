@@ -1,5 +1,6 @@
 package com.jansellopez.eemjoy.data.model
 
+import com.jansellopez.eemjoy.data.database.entities.CityEntity
 import com.jansellopez.eemjoy.data.network.CityNetwork
 
 data class City (
@@ -9,3 +10,4 @@ data class City (
     )
 
 fun CityNetwork.toDomain() = City(id,name, state)
+fun CityEntity.toDomain() = City(id,name, state)

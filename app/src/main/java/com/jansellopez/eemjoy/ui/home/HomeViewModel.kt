@@ -1,5 +1,6 @@
 package com.jansellopez.eemjoy.ui.home
 
+import android.net.ConnectivityManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,9 +20,9 @@ class HomeViewModel @Inject constructor(
 
     val cities = MutableLiveData<List<City>>()
 
-    fun onCreate(token:Token) {
+    fun onCreate(token:Token,connectivityManager: ConnectivityManager) {
         viewModelScope.launch {
-            val citiesUseCase = getCitiesUseCase(token)
+            val citiesUseCase = getCitiesUseCase(token,connectivityManager)
             if (!citiesUseCase.isNullOrEmpty())
                 cities.postValue(citiesUseCase)
         }

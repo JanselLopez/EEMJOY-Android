@@ -43,7 +43,7 @@ class ClientAdapter(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val collection =
                     users.stream()
-                        .filter { i -> i.counter.toString().toLowerCase().contains(str.lowercase(
+                        .filter { i -> i.numberCount.toString().toLowerCase().contains(str.lowercase(
                             Locale.getDefault()
                         )) }
                         .collect(Collectors.toList())
@@ -52,7 +52,7 @@ class ClientAdapter(
             } else {
                 users.clear()
                 for(r in all){
-                    if(r.counter.toString().lowercase(Locale.getDefault()).contains(str.lowercase(Locale.getDefault())))
+                    if(r.numberCount.toString().lowercase(Locale.getDefault()).contains(str.lowercase(Locale.getDefault())))
                         users.add(r)
                 }
             }
@@ -63,16 +63,16 @@ class ClientAdapter(
     override fun onBindViewHolder(holder: ClientViewHolder, position: Int) {
         with(holder){
             with(users[position]){
-                binding.tvContador.text = counter.toString()
+                binding.tvContador.text = numberCount.toString()
                 binding.tvName.text = "$firstName $firstLastName $secondLastName"
                 binding.btnGo.setOnClickListener {
                     val bindingBS = BottomsheetClientBinding.inflate(LayoutInflater.from(context))
-                    bindingBS.tvContador.text = counter.toString()
+                    bindingBS.tvContador.text = numberCount.toString()
                     bindingBS.tvName.text = "$firstName $firstLastName"
                     bindingBS.btnLecturas.setOnClickListener {
 
                         Intent(context,LecturasActivity::class.java).apply {
-                            putExtra("counter",counter)
+                            putExtra("counter",numberCount)
                             putExtra("name", binding.tvName.text)
                             context.startActivity(this)
                         }

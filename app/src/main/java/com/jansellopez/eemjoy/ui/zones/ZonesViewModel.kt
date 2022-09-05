@@ -1,5 +1,6 @@
 package com.jansellopez.eemjoy.ui.zones
 
+import android.net.ConnectivityManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,9 +18,9 @@ class ZonesViewModel @Inject constructor(
 
     val zones = MutableLiveData<List<Zone>>()
 
-    fun onCreate(city:Int,token: Token){
+    fun onCreate(city:Int,token: Token,connectivityManager: ConnectivityManager){
         viewModelScope.launch {
-            val zonesUseCase = getZonesUseCase(city,token)
+            val zonesUseCase = getZonesUseCase(city,token,connectivityManager)
             if(!zonesUseCase.isNullOrEmpty())
                 zones.postValue(zonesUseCase)
         }

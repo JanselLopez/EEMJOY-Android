@@ -35,4 +35,6 @@ class LoginViewModel @Inject constructor(
             Log.e("tokenVM", tokenL.access_token)
         }
     }
+
+    fun getToken():Token? = token.value
 }

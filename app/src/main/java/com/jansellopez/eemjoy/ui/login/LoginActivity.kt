@@ -1,11 +1,15 @@
 package com.jansellopez.eemjoy.ui.login
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.jansellopez.eemjoy.core.TokenRepository
+import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.data.model.User
 import com.jansellopez.eemjoy.data.userdata.SharedPreferenceManager
 import com.jansellopez.eemjoy.databinding.ActivityLoginBinding
@@ -28,21 +32,35 @@ class LoginActivity : AppCompatActivity() {
 
         screenSplash.setKeepOnScreenCondition{false}
 
+        val userPreference = SharedPreferenceManager.getINstance(this).user
+
+        if(userPreference.email.isNotEmpty()){
+            val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if(connectivityManager.isActiveNetworkMetered)
+                loginViewModel.login(userPreference)
+            else{
+                val intent = Intent(this,HomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                intent.putExtra("email",userPreference.email)
+                startActivity(intent)
+            }
+        }
+
         binding.btnLogin.setOnClickListener {
-            if(!binding.tvEmail.text.toString().isNullOrEmpty() && !binding.tvPassword.text.toString().isNullOrEmpty())
+            if(binding.tvEmail.text.toString().isNotEmpty() && binding.tvPassword.text.toString().isNotEmpty())
                loginViewModel.login(User(binding.tvEmail.text.toString(),binding.tvPassword.text.toString()))
         }
 
+
         loginViewModel.token.observe(this,{
             Log.e("token ",it.access_token)
-            if (!it.access_token.isNullOrEmpty()){
+            if (it.access_token.isNotEmpty()){
                 SharedPreferenceManager.getINstance(this).saveUser(User(binding.tvEmail.text.toString(), binding.tvPassword.text.toString()))
                 SharedPreferenceManager.getINstance(this).saveToken(it)
                 val intent = Intent(this,HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 intent.putExtra("email",binding.tvEmail.text.toString())
-                intent.putExtra("token",it.access_token)
-                intent.putExtra("type",it.token_type)
+                TokenRepository.setToken(it)
                 startActivity(intent)
             }
         })
