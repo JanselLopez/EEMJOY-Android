@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jansellopez.eemjoy.data.model.City
+import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.domain.GetCitiesUseCase
 import com.jansellopez.eemjoy.domain.GetZonesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,11 +17,11 @@ class HomeViewModel @Inject constructor(
     private val getCitiesUseCase: GetCitiesUseCase
 ) : ViewModel() {
 
-    val cities = MutableLiveData<List<String>>()
+    val cities = MutableLiveData<List<City>>()
 
-    fun onCreate() {
+    fun onCreate(token:Token) {
         viewModelScope.launch {
-            val citiesUseCase = getCitiesUseCase()
+            val citiesUseCase = getCitiesUseCase(token)
             if (!citiesUseCase.isNullOrEmpty())
                 cities.postValue(citiesUseCase)
         }

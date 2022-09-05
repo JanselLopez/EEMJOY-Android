@@ -3,6 +3,8 @@ package com.jansellopez.eemjoy.ui.zones
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jansellopez.eemjoy.data.model.Token
+import com.jansellopez.eemjoy.data.model.Zone
 import com.jansellopez.eemjoy.domain.GetZonesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -13,11 +15,11 @@ class ZonesViewModel @Inject constructor(
     private val getZonesUseCase: GetZonesUseCase
 ):ViewModel() {
 
-    val zones = MutableLiveData<List<String>>()
+    val zones = MutableLiveData<List<Zone>>()
 
-    fun onCreate(city:String){
+    fun onCreate(city:Int,token: Token){
         viewModelScope.launch {
-            val zonesUseCase = getZonesUseCase(city)
+            val zonesUseCase = getZonesUseCase(city,token)
             if(!zonesUseCase.isNullOrEmpty())
                 zones.postValue(zonesUseCase)
         }

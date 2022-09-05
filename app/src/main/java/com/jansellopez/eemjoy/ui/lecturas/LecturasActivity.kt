@@ -19,8 +19,15 @@ class LecturasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val bundle = intent.extras
+        binding.toolbar.title = bundle!!.getString("counter")
+        binding.toolbar.subtitle = bundle.getString("name")
+
         binding.fabAdd.setOnClickListener {
             getLectura()
+            if (!lectura.isNullOrEmpty()){
+
+            }
         }
         binding.toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -38,7 +45,9 @@ class LecturasActivity : AppCompatActivity() {
             lectura = input.text.toString()
         }
         builder.setNegativeButton(android.R.string.cancel
-        ) { dialog, _ -> dialog.cancel() }
+        ) { dialog, _ ->
+            lectura = ""
+            dialog.cancel() }
         builder.show()
     }
 }

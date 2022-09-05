@@ -3,12 +3,15 @@ package com.jansellopez.eemjoy.ui.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jansellopez.eemjoy.data.model.User
+import com.jansellopez.eemjoy.data.userdata.SharedPreferenceManager
 import com.jansellopez.eemjoy.databinding.ActivityLoginBinding
 import com.jansellopez.eemjoy.ui.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -27,18 +30,23 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
             if(!binding.tvEmail.text.toString().isNullOrEmpty() && !binding.tvPassword.text.toString().isNullOrEmpty())
-                loginViewModel.login(User(binding.tvEmail.text.toString(),binding.tvPassword.text.toString()))
-            /*Intent(this,HomeActivity::class.java).apply {
-                putExtra("token","15|d0wQAJZunhf3U2Q88WKTEpCrFtjhpvQTYsqeS0VN")
-            }*/
+               loginViewModel.login(User(binding.tvEmail.text.toString(),binding.tvPassword.text.toString()))
         }
 
         loginViewModel.token.observe(this,{
-            if(!it.access_token.isNullOrEmpty()){
-                startActivity(Intent(this, HomeActivity::class.java))
+            Log.e("token ",it.access_token)
+            if (!it.access_token.isNullOrEmpty()){
+                SharedPreferenceManager.getINstance(this).saveUser(User(binding.tvEmail.text.toString(), binding.tvPassword.text.toString()))
+                SharedPreferenceManager.getINstance(this).saveToken(it)
+                val intent = Intent(this,HomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                intent.putExtra("email",binding.tvEmail.text.toString())
+                intent.putExtra("token",it.access_token)
+                intent.putExtra("type",it.token_type)
+                startActivity(intent)
             }
         })
-
-
     }
+
+
 }

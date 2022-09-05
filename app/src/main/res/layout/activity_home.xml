@@ -70,7 +70,7 @@ android:layout_height="match_parent">
              app:layout_constraintStart_toStartOf="parent"
              app:layout_constraintTop_toTopOf="parent"/>
          <androidx.appcompat.widget.AppCompatTextView
-             android:id="@+id/appCompatTextView5"
+             android:id="@+id/tvUser"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_marginStart="10dp"
@@ -92,7 +92,7 @@ android:layout_height="match_parent">
              android:layout_marginTop="30dp"
              app:layout_constraintEnd_toEndOf="parent"
              app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toBottomOf="@+id/appCompatTextView5" />
+             app:layout_constraintTop_toBottomOf="@+id/tvUser" />
 
          <androidx.appcompat.widget.AppCompatTextView
              android:layout_width="wrap_content"

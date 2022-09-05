@@ -5,12 +5,15 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.jansellopez.eemjoy.data.model.City
+import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.databinding.CvCityBinding
 import com.jansellopez.eemjoy.databinding.CvZoneBinding
 import com.jansellopez.eemjoy.ui.zones.ZonesActivity
 
 class CityAdapter(
-    private val zones:List<String>
+    private val zones:List<City>,
+    private val token: Token
 ):RecyclerView.Adapter<CityAdapter.ZoneViewHolder>() {
 
     private lateinit var context: Context
@@ -26,10 +29,12 @@ class CityAdapter(
     override fun onBindViewHolder(holder: ZoneViewHolder, position: Int) {
         with(holder){
             with(zones[position]){
-                binding.tvZone.text = this
+                binding.tvZone.text = this.name
                 binding.cvCity.setOnClickListener {
                     val i = Intent(context,ZonesActivity::class.java)
-                    i.putExtra("city",this)
+                    i.putExtra("city",this.id)
+                    i.putExtra("type",token.token_type)
+                    i.putExtra("token",token.access_token)
                     context.startActivity(i)
                 }
             }

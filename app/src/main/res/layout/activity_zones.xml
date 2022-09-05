@@ -62,24 +62,19 @@
                     android:id="@+id/appCompatTextView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/hola"
                     android:textSize="12sp"
                     android:textColor = "@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/appCompatTextView5"
+                    android:id="@+id/tvUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/appCompatTextView4"
-                    tools:text="User"/>
+                    />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/appCompatTextView6"
@@ -92,7 +87,7 @@
                     android:layout_marginTop="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/appCompatTextView5" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvUser" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -116,7 +111,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+                app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+                />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

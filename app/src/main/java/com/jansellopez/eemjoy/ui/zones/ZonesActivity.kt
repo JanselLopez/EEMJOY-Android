@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.databinding.ActivityZonesBinding
 import com.jansellopez.eemjoy.ui.zones.adapter.ZoneAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,14 +23,15 @@ class ZonesActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val bundle = intent.extras
-        val city = bundle!!.getString("city")
-
-        zonesViewModel.onCreate(city?:"")
+        val city = bundle!!.getInt("city")
+        val type = bundle.getString("type")
+        val body = bundle.getString("token")
+        zonesViewModel.onCreate(city?:1, Token(body?:"",type?:""))
 
         binding.rvZones.layoutManager = LinearLayoutManager(this)
 
         zonesViewModel.zones.observe(this,{
-            binding.rvZones.adapter = ZoneAdapter(it,city?:"")
+            binding.rvZones.adapter = ZoneAdapter(it,city?:1)
         })
 
     }
