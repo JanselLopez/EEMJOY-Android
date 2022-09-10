@@ -1,6 +1,6 @@
 package com.jansellopez.eemjoy.data.model
 
-import com.jansellopez.eemjoy.data.network.TokenNetwork
+import com.jansellopez.eemjoy.data.network.modelnetwork.TokenNetwork
 
 data class Token(
     val access_token:String,

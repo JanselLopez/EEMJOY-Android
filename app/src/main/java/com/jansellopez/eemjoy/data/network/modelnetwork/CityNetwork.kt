@@ -1,4 +1,4 @@
-package com.jansellopez.eemjoy.data.network
+package com.jansellopez.eemjoy.data.network.modelnetwork
 
 data class CityNetwork(
     val id:Int,

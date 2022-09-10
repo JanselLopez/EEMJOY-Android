@@ -1,10 +1,8 @@
 package com.jansellopez.eemjoy.ui.zones
 
-import android.net.ConnectivityManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.data.model.Zone
 import com.jansellopez.eemjoy.domain.GetZonesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,12 +15,15 @@ class ZonesViewModel @Inject constructor(
 ):ViewModel() {
 
     val zones = MutableLiveData<List<Zone>>()
+    val loading = MutableLiveData<Boolean>()
 
-    fun onCreate(city:Int,token: Token,connectivityManager: ConnectivityManager){
+    fun onCreate(city: Int, isNetDisponible: Boolean){
         viewModelScope.launch {
-            val zonesUseCase = getZonesUseCase(city,token,connectivityManager)
+            loading.postValue(true)
+            val zonesUseCase = getZonesUseCase(city,isNetDisponible)
             if(!zonesUseCase.isNullOrEmpty())
                 zones.postValue(zonesUseCase)
+            loading.postValue(false)
         }
     }
 

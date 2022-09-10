@@ -1,7 +1,7 @@
 package com.jansellopez.eemjoy.data.model
 
 import com.jansellopez.eemjoy.data.database.entities.CityEntity
-import com.jansellopez.eemjoy.data.network.CityNetwork
+import com.jansellopez.eemjoy.data.network.modelnetwork.CityNetwork
 
 data class City (
     val id:Int,

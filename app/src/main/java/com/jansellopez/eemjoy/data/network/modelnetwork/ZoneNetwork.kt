@@ -1,4 +1,4 @@
-package com.jansellopez.eemjoy.data.network
+package com.jansellopez.eemjoy.data.network.modelnetwork
 
 import java.net.Inet4Address
 

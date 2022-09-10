@@ -1,4 +1,4 @@
-package com.jansellopez.eemjoy.data.network
+package com.jansellopez.eemjoy.data.network.modelnetwork
 
 import com.google.gson.annotations.SerializedName
 import com.jansellopez.eemjoy.data.model.User

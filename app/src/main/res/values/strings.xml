@@ -47,9 +47,10 @@
     <string name="select_client">Selecciona la localidad</string>
     <string name="agregar_lectura">Agregar Lectura</string>
     <string name="lecturas">Lecturas</string>
-    <string name="pendiente">Pendiente</string>
+    <string name="pendiente">pendiente</string>
     <string name="factura">Imprimir Factura</string>
     <string name="lectura">Lectura</string>
+    <string name="kwh">kWh</string>
 
 
 </resources>

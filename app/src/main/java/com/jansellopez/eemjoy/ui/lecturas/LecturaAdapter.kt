@@ -27,9 +27,10 @@ class LecturaAdapter(
     override fun onBindViewHolder(holder: LecturaViewHolder, position: Int) {
         with(holder){
             with(lecturas[position]){
-                binding.tvDate.text = "${this.update.get(Calendar.DAY_OF_MONTH)}/${this.update.get(Calendar.MONTH)}/${this.update.get(Calendar.YEAR)}}"
-                binding.tvKw.text = "${this.kilobatios}"
-                binding.tvState.text = this.state
+                binding.tvDate.text = lectura_actual.toString()
+                val kb = "$kilovatios ${context.resources.getString(R.string.kwh)}"
+                binding.tvKw.text = kb
+                binding.tvState.text = state
                 if (this.state == context.resources.getString(R.string.pendiente))
                     binding.tvState.setTextColor(context.resources.getColor(R.color.red))
                 else

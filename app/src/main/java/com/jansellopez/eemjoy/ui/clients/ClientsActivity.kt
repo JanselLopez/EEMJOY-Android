@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.SearchView
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jansellopez.eemjoy.core.CheckConnect
 import com.jansellopez.eemjoy.data.model.Client
 import com.jansellopez.eemjoy.databinding.ActivityClientsBinding
 import com.jansellopez.eemjoy.ui.clients.adapter.ClientAdapter
@@ -28,26 +30,40 @@ class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
         val bundle = intent.extras
 
-        val city = bundle!!.getString("city")
-        val zone = bundle.getString("zone")
+        val city = bundle!!.getInt("city")
+        val zone = bundle.getInt("zone")
 
-        if (city != null && zone != null) {
-                clientsViewModel.onCreate(city,zone)
-        }
+        clientsViewModel.onCreate(city, zone, CheckConnect(this))
 
         clientsViewModel.users.observe(this,{
-            clientAdapter = ClientAdapter(it as MutableList<Client>)
+            clientAdapter = ClientAdapter(it as MutableList<Client>,zone)
             binding.rvClients.adapter = clientAdapter
         })
 
+        clientsViewModel.loading.observe(this,{
+            binding.rvClients.isVisible = !it
+            binding.shimmer.isVisible =it
+        })
+
+        binding.svClient.setOnQueryTextListener(this)
+
+        clientsViewModel.period.observe(this,{
+            binding.appCompatTextView6.text = it.title
+        })
+
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
     }
 
-    override fun onQueryTextSubmit(p0: String?): Boolean {
-        return true
-    }
+    override fun onQueryTextSubmit(p0: String?): Boolean = true
+
 
     override fun onQueryTextChange(p0: String?): Boolean {
         clientAdapter.filter(p0!!)
         return false
     }
+
+
 }

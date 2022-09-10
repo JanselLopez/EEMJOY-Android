@@ -1,5 +1,8 @@
 package com.jansellopez.eemjoy.data.network
 
+import com.jansellopez.eemjoy.data.network.modelnetwork.TokenNetwork
+import com.jansellopez.eemjoy.data.network.modelnetwork.UserNetwork
+import com.jansellopez.eemjoy.data.network.responses.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -20,5 +23,12 @@ interface UserApiClient {
     fun getClients(@Header("Authorization") auth:String,
                    @Path("city") city:Int,
                    @Path("zone") zone:Int):Call<ResponseClient>
+
+    @GET("lecturas/{zone}")
+    fun getLecturas(@Header("Authorization") auth:String,
+                    @Path("zone") zone:Int):Call<ResponseLectura>
+
+    @GET("periodo")
+    fun getPeriod(@Header("Authorization") auth:String):Call<ResponsePeriod>
 
 }

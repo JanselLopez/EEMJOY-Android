@@ -3,12 +3,16 @@ package com.jansellopez.eemjoy.ui.login
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.jansellopez.eemjoy.core.TokenRepository
+import androidx.core.view.isVisible
+import com.jansellopez.eemjoy.core.CheckConnect
+import com.jansellopez.eemjoy.data.TokenRepository
 import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.data.model.User
 import com.jansellopez.eemjoy.data.userdata.SharedPreferenceManager
@@ -35,10 +39,11 @@ class LoginActivity : AppCompatActivity() {
         val userPreference = SharedPreferenceManager.getINstance(this).user
 
         if(userPreference.email.isNotEmpty()){
-            val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            if(connectivityManager.isActiveNetworkMetered)
+            binding.tvEmail.setText(userPreference.email)
+            binding.tvPassword.setText(userPreference.password)
+            if(CheckConnect(this)) {
                 loginViewModel.login(userPreference)
-            else{
+            }else{
                 val intent = Intent(this,HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 intent.putExtra("email",userPreference.email)
@@ -63,6 +68,13 @@ class LoginActivity : AppCompatActivity() {
                 TokenRepository.setToken(it)
                 startActivity(intent)
             }
+        })
+
+        loginViewModel.loading.observe(this,{
+            binding.tvEmail.isEnabled = !it
+            binding.tvPassword.isEnabled = !it
+                binding.btnLogin.isVisible = !it
+                binding.progressCircular.isVisible =it
         })
     }
 

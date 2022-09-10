@@ -1,12 +1,10 @@
 package com.jansellopez.eemjoy.data.network
 
-import android.util.Log
 import com.jansellopez.eemjoy.core.HttpsTrustManager
 import com.jansellopez.eemjoy.data.model.Token
+import com.jansellopez.eemjoy.data.network.modelnetwork.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Response
 import retrofit2.await
 import javax.inject.Inject
 
@@ -16,18 +14,8 @@ class UserService @Inject constructor(
 ){
 
     private lateinit var cities:List<CityNetwork>
-   /* suspend fun getCategories(): List<String> {
-        Log.e("entro","service")
-       return withContext(Dispatchers.IO) {
-            apiClient.getCategories().body() ?: emptyList()
-        }
-    }
 
-    suspend fun getJokeByCategory(category: String):JokeNetwork=
-        withContext(Dispatchers.IO){
-        apiClient.getJokeByCategory("random?category=$category").body()?: JokeNetwork("","")
-    }*/
-    suspend fun login(userNetwork: UserNetwork):TokenNetwork = withContext(Dispatchers.IO)
+    suspend fun login(userNetwork: UserNetwork): TokenNetwork = withContext(Dispatchers.IO)
    {
             HttpsTrustManager.allowAllSSL()
             apiClient.login(userNetwork).await()
@@ -43,14 +31,19 @@ class UserService @Inject constructor(
         apiClient.getZones("${token.token_type} ${token.access_token}").await().zones
     }
 
-    suspend fun getClients(token: Token):List<ClientNetwork> = withContext(Dispatchers.IO){
+    suspend fun getClients(token: Token,city:Int,zone:Int):List<ClientNetwork> = withContext(Dispatchers.IO){
         HttpsTrustManager.allowAllSSL()
-        apiClient.getClients("${token.token_type} ${token.access_token}").await().clients
+        apiClient.getClients("${token.token_type} ${token.access_token}",city,zone).await().clients
     }
 
+    suspend fun getLecturas(token: Token, zone:Int):List<LecturaNetwork> = withContext(Dispatchers.IO){
+        HttpsTrustManager.allowAllSSL()
+        apiClient.getLecturas("${token.token_type} ${token.access_token}",zone).await().lecturas
+    }
 
-
-
-
+    suspend fun getPeriod(token: Token):PeriodNetwork = withContext(Dispatchers.IO){
+        HttpsTrustManager.allowAllSSL()
+        apiClient.getPeriod("${token.token_type} ${token.access_token}").await().periodo[0]
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.jansellopez.eemjoy.data.model
 
-import com.jansellopez.eemjoy.data.network.ClientNetwork
+import com.jansellopez.eemjoy.data.database.entities.ClientEntity
+import com.jansellopez.eemjoy.data.network.modelnetwork.ClientNetwork
 
 data class Client(
     val id:Int,
@@ -10,4 +11,5 @@ data class Client(
     val numberCount:String
     )
 
-fun ClientNetwork.toDomain() = Client(id = id,firstName= firstName,firstLastName = firstLastName,secondLastName = secondLastName, numberCount= numberCount)
+fun ClientNetwork.toDomain() = Client(id = id,firstName= first_name?:"",firstLastName = first_lastname,secondLastName = second_lastname?:"", numberCount= number_cont)
+fun ClientEntity.toDomain() = Client(id,firstName,firstLastName,secondLastName, numberCount)

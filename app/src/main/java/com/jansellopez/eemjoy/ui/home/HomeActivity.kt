@@ -1,17 +1,16 @@
 package com.jansellopez.eemjoy.ui.home
 
-import android.content.Context
-import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.jansellopez.eemjoy.core.TokenRepository
-import com.jansellopez.eemjoy.data.model.Token
+import com.jansellopez.eemjoy.data.TokenRepository
 import com.jansellopez.eemjoy.databinding.ActivityHomeBinding
 import com.jansellopez.eemjoy.ui.home.adapter.CityAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import com.jansellopez.eemjoy.core.CheckConnect
+
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -31,12 +30,18 @@ class HomeActivity : AppCompatActivity() {
 
         binding.rvCities.layoutManager = GridLayoutManager(this,2)
 
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        homeViewModel.onCreate(TokenRepository.getToken(),connectivityManager)
+
+        homeViewModel.onCreate(CheckConnect(this))
 
         homeViewModel.cities.observe(this,{
-            binding.rvCities.adapter = CityAdapter(it,TokenRepository.getToken())
+            binding.rvCities.adapter = CityAdapter(it, TokenRepository.getToken())
+        })
+
+        homeViewModel.loading.observe(this,{
+            binding.rvCities.isVisible = !it
+            binding.shimmer.isVisible =it
         })
     }
+
 }

@@ -80,8 +80,23 @@
                 android:layout_gravity="center"
                 app:elevation="2dp"
                 android:id = "@+id/btnLogin"
-                >
-            </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
+                />
+            <ProgressBar
+                android:visibility ="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="60dp"
+                app:backgroundTint="?attr/colorAccent"
+                android:layout_marginTop="20dp"
+                android:text="@string/iniciar_sesion"
+                android:gravity="center"
+                app:rippleColor="@color/white"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                app:elevation="2dp"
+                android:id = "@+id/progress_circular"
+                />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

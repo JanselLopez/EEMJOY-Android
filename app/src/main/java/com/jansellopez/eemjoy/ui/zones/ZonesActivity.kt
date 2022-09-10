@@ -1,13 +1,11 @@
 package com.jansellopez.eemjoy.ui.zones
 
-import android.content.Context
-import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jansellopez.eemjoy.core.TokenRepository
-import com.jansellopez.eemjoy.data.model.Token
+import com.jansellopez.eemjoy.core.CheckConnect
 import com.jansellopez.eemjoy.databinding.ActivityZonesBinding
 import com.jansellopez.eemjoy.ui.zones.adapter.ZoneAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,16 +26,25 @@ class ZonesActivity : AppCompatActivity() {
         val bundle = intent.extras
         val city = bundle!!.getInt("city")
 
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        zonesViewModel.onCreate(city, TokenRepository.getToken(),connectivityManager)
+        zonesViewModel.onCreate(city, CheckConnect(this))
 
         binding.rvZones.layoutManager = LinearLayoutManager(this)
 
         zonesViewModel.zones.observe(this,{
-            binding.rvZones.adapter = ZoneAdapter(it,city?:1)
+            binding.rvZones.adapter = ZoneAdapter(it, city)
         })
 
+        zonesViewModel.loading.observe(this,{
+            binding.rvZones.isVisible = !it
+            binding.shimmer.isVisible =it
+        })
+
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
     }
+
+
 
 }

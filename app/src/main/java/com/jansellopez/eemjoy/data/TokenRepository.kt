@@ -1,4 +1,4 @@
-package com.jansellopez.eemjoy.core
+package com.jansellopez.eemjoy.data
 
 import com.jansellopez.eemjoy.data.model.Token
 

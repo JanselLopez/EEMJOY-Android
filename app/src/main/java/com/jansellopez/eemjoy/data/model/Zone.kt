@@ -1,7 +1,7 @@
 package com.jansellopez.eemjoy.data.model
 
 import com.jansellopez.eemjoy.data.database.entities.ZoneEntity
-import com.jansellopez.eemjoy.data.network.ZoneNetwork
+import com.jansellopez.eemjoy.data.network.modelnetwork.ZoneNetwork
 
 data class Zone(
     val id:Int,

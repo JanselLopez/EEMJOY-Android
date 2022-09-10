@@ -17,7 +17,8 @@ import java.util.*
 import java.util.stream.Collectors
 
 class ClientAdapter(
-    private val users:MutableList<Client>
+    private val users:MutableList<Client>,
+    private val zone:Int
 ):RecyclerView.Adapter<ClientAdapter.ClientViewHolder>() {
     private var all = mutableListOf<Client>()
 
@@ -70,10 +71,11 @@ class ClientAdapter(
                     bindingBS.tvContador.text = numberCount.toString()
                     bindingBS.tvName.text = "$firstName $firstLastName"
                     bindingBS.btnLecturas.setOnClickListener {
-
                         Intent(context,LecturasActivity::class.java).apply {
                             putExtra("counter",numberCount)
                             putExtra("name", binding.tvName.text)
+                            putExtra("zone",zone)
+                            putExtra("clientId",id)
                             context.startActivity(this)
                         }
 
