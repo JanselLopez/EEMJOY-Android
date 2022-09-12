@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import com.jansellopez.eemjoy.core.CheckConnect
@@ -18,6 +19,7 @@ import com.jansellopez.eemjoy.data.model.User
 import com.jansellopez.eemjoy.data.userdata.SharedPreferenceManager
 import com.jansellopez.eemjoy.databinding.ActivityLoginBinding
 import com.jansellopez.eemjoy.ui.home.HomeActivity
+import cu.jansellopez.custom_snackbars.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -28,32 +30,47 @@ class LoginActivity : AppCompatActivity() {
 
     private val loginViewModel:LoginViewModel by viewModels()
 
+    private lateinit var customSnackBar:CustomSnackBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        val screenSplash = installSplashScreen()
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        screenSplash.setKeepOnScreenCondition{false}
+        customSnackBar = CustomSnackBar(this,binding.coordinator)
 
         val userPreference = SharedPreferenceManager.getINstance(this).user
 
         if(userPreference.email.isNotEmpty()){
-            binding.tvEmail.setText(userPreference.email)
-            binding.tvPassword.setText(userPreference.password)
             if(CheckConnect(this)) {
-                loginViewModel.login(userPreference)
+                binding.tvEmail.setText(userPreference.email)
+                binding.tvPassword.setText(userPreference.password)
+                loginViewModel.login(userPreference,this, CoordinatorLayout(this), CheckConnect(this))
             }else{
                 val intent = Intent(this,HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 intent.putExtra("email",userPreference.email)
                 startActivity(intent)
+                finish()
             }
         }
 
         binding.btnLogin.setOnClickListener {
-            if(binding.tvEmail.text.toString().isNotEmpty() && binding.tvPassword.text.toString().isNotEmpty())
-               loginViewModel.login(User(binding.tvEmail.text.toString(),binding.tvPassword.text.toString()))
+            if(binding.tvEmail.text.toString().isNotEmpty() && binding.tvPassword.text.toString().isNotEmpty()) {
+                try {
+                    loginViewModel.login(
+                        User(
+                            binding.tvEmail.text.toString(),
+                            binding.tvPassword.text.toString()
+                        ),
+                        this,
+                        binding.coordinator,
+                        CheckConnect(this)
+                    )
+                }catch (e:Exception){
+                    Log.e("Error","Serve")
+                }
+            }
         }
 
 
@@ -73,9 +90,13 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loading.observe(this,{
             binding.tvEmail.isEnabled = !it
             binding.tvPassword.isEnabled = !it
-                binding.btnLogin.isVisible = !it
-                binding.progressCircular.isVisible =it
+            binding.btnLogin.isVisible = !it
+            binding.progressCircular.isVisible =it
         })
+    }
+
+    override fun onBackPressed() {
+        customSnackBar.onBackPressed()
     }
 
 

@@ -51,6 +51,9 @@
     <string name="factura">Imprimir Factura</string>
     <string name="lectura">Lectura</string>
     <string name="kwh">kWh</string>
+    <string name="incorrect_password">Las credenciales son incorrectas</string>
+    <string name="copyright">Copyright © 2022 All rights reserved</string>
+    <string name="no_connection">Por favor conecte el dispositivo</string>
 
 
 </resources>

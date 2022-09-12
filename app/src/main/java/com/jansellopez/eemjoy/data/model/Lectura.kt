@@ -14,7 +14,9 @@ data class Lectura(
     val lectura_actual:Int,
     val kilovatios:Int,
     val tarifa_id:Int,
+    val created_by:Int,
+    val created_at:String
 )
 
-fun LecturaNetwork.toDomain() = Lectura(id, client_id, address_id, configuracion_id, lectura_anterior, state, lectura_actual, kilovatios, tarifa_id)
-fun LecturaEntity.toDomain() = Lectura(id, client_id, address_id, configuracion_id, lectura_anterior, state, lectura_actual, kilovatios, tarifa_id)
+fun LecturaNetwork.toDomain() = Lectura(id, client_id, address_id, configuracion_id, lectura_anterior, state, lectura_actual, kilovatios, tarifa_id, created_by, created_at)
+fun LecturaEntity.toDomain() = Lectura(id, client_id, address_id, configuracion_id, lectura_anterior, state, lectura_actual, kilovatios, tarifa_id, created_by, created_at)

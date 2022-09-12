@@ -11,5 +11,7 @@ data class LecturaNetwork(
     val state:String,
     val lectura_actual:Int,
     val kilovatios:Int,
-    val tarifa_id:Int
+    val tarifa_id:Int,
+    val created_by:Int,
+    val created_at:String
 )

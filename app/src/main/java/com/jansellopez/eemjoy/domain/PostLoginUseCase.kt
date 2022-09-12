@@ -9,9 +9,6 @@ import javax.inject.Inject
 class PostLoginUseCase @Inject constructor(
     private val repository: ClientRepository
 ) {
-    suspend operator fun invoke(user: User): Token {
-        val token = repository.login(user)
-        Log.e("tokenUseCase", token.access_token)
-        return token
-    }
+    suspend operator fun invoke(user: User,isConnect:Boolean): Token  =
+        if(isConnect) repository.login(user) else Token("","no_connection")
 }

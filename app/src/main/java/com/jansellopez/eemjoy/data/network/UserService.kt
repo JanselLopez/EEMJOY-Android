@@ -1,10 +1,12 @@
 package com.jansellopez.eemjoy.data.network
 
+import android.util.Log
 import com.jansellopez.eemjoy.core.HttpsTrustManager
 import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.data.network.modelnetwork.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import retrofit2.await
 import javax.inject.Inject
 
@@ -17,13 +19,18 @@ class UserService @Inject constructor(
 
     suspend fun login(userNetwork: UserNetwork): TokenNetwork = withContext(Dispatchers.IO)
    {
-            HttpsTrustManager.allowAllSSL()
-            apiClient.login(userNetwork).await()
+       try {
+           HttpsTrustManager.allowAllSSL()
+           apiClient.login(userNetwork).await()
+       }catch (e:HttpException){
+           Log.e("Error",e.toString())
+           TokenNetwork("","incorrect_password")
+       }
     }
 
     suspend fun getCities(token: Token):List<CityNetwork> = withContext(Dispatchers.IO) {
-        HttpsTrustManager.allowAllSSL()
-        apiClient.getCities("${token.token_type} ${token.access_token}").await().cities
+            HttpsTrustManager.allowAllSSL()
+            apiClient.getCities("${token.token_type} ${token.access_token}").await().cities
         }
 
     suspend fun getZones(token: Token):List<ZoneNetwork> = withContext(Dispatchers.IO) {

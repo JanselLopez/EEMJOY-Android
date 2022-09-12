@@ -39,8 +39,14 @@ interface ClientDao {
     @Query("SELECT * FROM lecturas_table WHERE client_id=:client_id and state = 'pendiente'")
     suspend fun getAllLecturas(client_id:Int):List<LecturaEntity>?
 
+    @Query("SELECT * FROM lecturas_table WHERE client_id=:client_id ORDER BY id DESC LIMIT 1")
+    suspend fun getLastLectura(client_id:Int):LecturaEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLecturas(LecturasList:List<LecturaEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLectura(lectura:LecturaEntity)
 
     @Query("DELETE FROM lecturas_table")
     suspend fun clearLecturas()

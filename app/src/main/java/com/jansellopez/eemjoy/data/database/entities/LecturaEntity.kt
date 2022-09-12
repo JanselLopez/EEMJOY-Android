@@ -19,8 +19,10 @@ data class LecturaEntity(
     @ColumnInfo(name="state")val state:String,
     @ColumnInfo(name="lectura_actual")val lectura_actual:Int,
     @ColumnInfo(name="kilovatios")val kilovatios:Int,
-    @ColumnInfo(name="tarifa_id")val tarifa_id:Int
+    @ColumnInfo(name="tarifa_id")val tarifa_id:Int,
+    @ColumnInfo(name="created_by")val created_by:Int,
+    @ColumnInfo(name="created_at")val created_at:String
 )
 
-fun Lectura.toDomain() = LecturaEntity(id, client_id, address_id, configuracion_id, lectura_anterior, state, lectura_actual, kilovatios, tarifa_id)
+fun Lectura.toDomain() = LecturaEntity(id, client_id, address_id, configuracion_id, lectura_anterior, state, lectura_actual, kilovatios, tarifa_id,created_by, created_at)
 

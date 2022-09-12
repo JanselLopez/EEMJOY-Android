@@ -45,7 +45,11 @@ class ClientRepository @Inject constructor(
 
     suspend fun getLecturasFromDataBase(clientId:Int):List<Lectura> = userDao.getAllLecturas(clientId)!!.map { it.toDomain() }
 
+    suspend fun getLastLecturaFromDataBase(clientId: Int):Lectura = userDao.getLastLectura(clientId)!!.toDomain()
+
     suspend fun pushLecturasToDatabase(Lecturas:List<LecturaEntity>) = userDao.insertLecturas(Lecturas)
+
+    suspend fun pushLecturaToDatabase(lectura: LecturaEntity) = userDao.insertLectura(lectura)
 
     suspend fun deleteAllLecturasFromDatabase() = userDao.clearLecturas()
 
