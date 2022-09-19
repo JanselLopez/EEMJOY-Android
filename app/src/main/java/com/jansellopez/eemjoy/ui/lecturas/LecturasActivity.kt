@@ -2,6 +2,7 @@ package com.jansellopez.eemjoy.ui.lecturas
 
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -59,25 +60,34 @@ class LecturasActivity : AppCompatActivity() {
         builder.setPositiveButton(android.R.string.ok
         ) { _, _ ->
             lectura = input.text.toString()
+            val cal = Calendar.getInstance()
+            Log.e("Fecha Actual","${cal.get(Calendar.DAY_OF_MONTH)}-${cal.get(Calendar.MONTH)}")
             if(lecturaViewModel.period.value?.endDate?.timeInMillis ?:0  >System.currentTimeMillis() &&lecturaViewModel.period.value?.beginDate?.timeInMillis ?:0  <System.currentTimeMillis()){
                 if(!lectura.isNullOrEmpty()){
+
                     val date: Date = Calendar.getInstance().time
                     val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss.zzz")
                     val actualDate: String = dateFormat.format(date)
                     System.currentTimeMillis()
-                    lecturaViewModel.pushLectura(Lectura(
-                        lecturaViewModel.lastLectura.value!!.id + 1,
-                        clientId,
-                        zone,
-                        lecturaViewModel.period.value!!.id,
-                        lecturaViewModel.lastLectura.value!!.lectura_actual,
-                        resources.getString(R.string.pendiente),
-                        lectura!!.toInt(),
-                        lectura!!.toInt() - lecturaViewModel.lastLectura.value!!.lectura_actual,
-                        0,
-                        0,
-                        actualDate
-                    ),clientId)
+
+                    lecturaViewModel.pushLectura(
+                        Lectura(
+                            lecturaViewModel.lastLectura.value!!.id + 1,
+                            clientId,
+                            zone,
+                            lecturaViewModel.period.value!!.id,
+                            lecturaViewModel.lastLectura.value!!.lectura_actual,
+                            resources.getString(R.string.pendiente),
+                            lectura!!.toInt(),
+                            lectura!!.toInt() - lecturaViewModel.lastLectura.value!!.lectura_actual,
+                            0,
+                            0,
+                            actualDate
+                        ), this, intent.extras!!.getString("counter")!!.toInt(),clientId
+                    )
+
+
+
                 }else{
                     Toast.makeText(this,"Introduzca algun valor",Toast.LENGTH_SHORT).show()
                 }

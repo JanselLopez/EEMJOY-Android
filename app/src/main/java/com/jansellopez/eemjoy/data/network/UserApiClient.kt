@@ -1,5 +1,6 @@
 package com.jansellopez.eemjoy.data.network
 
+import com.jansellopez.eemjoy.data.network.modelnetwork.LecturaNetworkAdd
 import com.jansellopez.eemjoy.data.network.modelnetwork.TokenNetwork
 import com.jansellopez.eemjoy.data.network.modelnetwork.UserNetwork
 import com.jansellopez.eemjoy.data.network.responses.*
@@ -30,5 +31,13 @@ interface UserApiClient {
 
     @GET("periodo")
     fun getPeriod(@Header("Authorization") auth:String):Call<ResponsePeriod>
+
+    @POST("lectura")
+    fun addLectura(@Header("Authorization") auth:String,
+                   @Body lecturaNetworkAdd: LecturaNetworkAdd
+                   ):Call<ResponseAddLecturas>
+
+    @GET("tarifas")
+    fun getTarifas(@Header("Authorization") auth:String):Call<ResponseTarifas>
 
 }

@@ -32,6 +32,7 @@ class ZoneAdapter(
                     val i = Intent(context,ClientsActivity::class.java)
                     i.putExtra("city",city)
                     i.putExtra("zone",this.id)
+                    i.putExtra("zone_name",this.address)
                     context.startActivity(i)
                 }
             }

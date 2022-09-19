@@ -1,7 +1,5 @@
 package com.jansellopez.eemjoy.data.network.modelnetwork
 
-import java.util.*
-
 data class LecturaNetwork(
     val id:Int,
     val client_id: Int,

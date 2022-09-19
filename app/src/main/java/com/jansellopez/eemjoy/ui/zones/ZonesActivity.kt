@@ -26,7 +26,7 @@ class ZonesActivity : AppCompatActivity() {
         val bundle = intent.extras
         val city = bundle!!.getInt("city")
 
-        zonesViewModel.onCreate(city, CheckConnect(this))
+        zonesViewModel.onCreate(city, CheckConnect(this),this)
 
         binding.rvZones.layoutManager = LinearLayoutManager(this)
 

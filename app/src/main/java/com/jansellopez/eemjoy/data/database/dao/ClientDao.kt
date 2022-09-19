@@ -39,7 +39,7 @@ interface ClientDao {
     @Query("SELECT * FROM lecturas_table WHERE client_id=:client_id and state = 'pendiente'")
     suspend fun getAllLecturas(client_id:Int):List<LecturaEntity>?
 
-    @Query("SELECT * FROM lecturas_table WHERE client_id=:client_id ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM lecturas_table WHERE client_id=:client_id and state <> 'sin pago' ORDER BY id DESC LIMIT 1")
     suspend fun getLastLectura(client_id:Int):LecturaEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -51,6 +51,16 @@ interface ClientDao {
     @Query("DELETE FROM lecturas_table")
     suspend fun clearLecturas()
 
+    //lecturas for add
+    @Query("SELECT * FROM lecturas_add_table")
+    suspend fun getAllLecturasForAdd():List<LecturaEntityAdd>?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLecturaAdd(lecturaEntityAdd: LecturaEntityAdd)
+
+    @Query("DELETE FROM lecturas_add_table")
+    suspend fun clearLecturasAdd()
+
     //periods
     @Query("SELECT * FROM periods_table ORDER BY paymentDate DESC LIMIT 1")
     suspend fun getPeriod():PeriodEntity?
@@ -60,5 +70,17 @@ interface ClientDao {
 
     @Query("DELETE FROM periods_table")
     suspend fun clearPeriods()
+
+    //tarifas
+    @Query("SELECT * FROM tarifas_table")
+    suspend fun getTarifas():List<TarifasEntity>?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTarifas(tarifas:List<TarifasEntity>)
+
+    @Query("DELETE FROM tarifas_table")
+    suspend fun clearTarifas()
+
+
 
 }

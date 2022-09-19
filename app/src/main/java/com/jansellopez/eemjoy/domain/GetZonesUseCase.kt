@@ -1,5 +1,6 @@
 package com.jansellopez.eemjoy.domain
 
+import android.content.Context
 import com.jansellopez.eemjoy.data.ClientRepository
 import com.jansellopez.eemjoy.data.database.entities.toDomain
 import com.jansellopez.eemjoy.data.model.Zone
@@ -9,11 +10,11 @@ class GetZonesUseCase @Inject constructor(
     private val repository: ClientRepository,
 ){
 
-    suspend operator fun invoke(city: Int, isNetDisponible: Boolean):List<Zone>{
+    suspend operator fun invoke(city: Int, isNetDisponible: Boolean,context: Context):List<Zone>{
         val zones = mutableListOf<Zone>()
         val repoZones:List<Zone>
         if (isNetDisponible){
-            repoZones =repository.getZones()
+            repoZones =repository.getZones(context)
             repository.deleteAllZonesFromDatabase()
             repository.pushZonesToDatabase(repoZones.map { it.toDomain() })
         }else

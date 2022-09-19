@@ -18,8 +18,8 @@ object NetworkModule {
     @Provides
     fun provideRetrofit():Retrofit {
         val client = OkHttpClient.Builder()
-            .connectTimeout(100, TimeUnit.SECONDS)
-            .readTimeout(100, TimeUnit.SECONDS).build()
+            .connectTimeout(150, TimeUnit.SECONDS)
+            .readTimeout(150, TimeUnit.SECONDS).build()
         return Retrofit.Builder()
             .baseUrl("http://apix.eemjoyabaj.com/public/api/")
             .addConverterFactory(GsonConverterFactory.create())

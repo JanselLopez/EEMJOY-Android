@@ -1,7 +1,6 @@
 package com.jansellopez.eemjoy.data.userdata
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.data.model.User
 
@@ -27,7 +26,6 @@ class SharedPreferenceManager private constructor(private val mCtx: Context){
         val editor = sharedPreferences.edit()
         editor.putString("email",user.email)
         editor.putString("password",user.password)
-
         editor.apply()
     }
 
@@ -36,9 +34,11 @@ class SharedPreferenceManager private constructor(private val mCtx: Context){
         val sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME,Context.MODE_PRIVATE)
         val type = sharedPreferences.getString("type","")
         val body = sharedPreferences.getString("token","")
+        val username:String? = sharedPreferences.getString("username","")
         return Token(
             body?:"",
             type?:"",
+            username?:""
         )
     }
 
@@ -47,7 +47,7 @@ class SharedPreferenceManager private constructor(private val mCtx: Context){
         val editor = sharedPreferences.edit()
         editor.putString("type",token.token_type)
         editor.putString("token",token.access_token)
-
+        editor.putString("username",token.username)
         editor.apply()
     }
 

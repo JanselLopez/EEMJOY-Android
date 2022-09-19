@@ -6,7 +6,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
@@ -21,8 +20,9 @@
     <string name="login_failed">"Login failed"</string>
     <string name="contador">Contador:</string>
     <string name="name">Nombre:</string>
+    <string name="name_or_counter">Nombre o Contador</string>
     <string name="ir">IR</string>
-    <string name="email_or_user">Usuario o correo</string>
+    <string name="email_or_user">Correo</string>
     <string name="password">Contraseña</string>
     <string name="mensaje_crear_cuenta">No tiene creada una cuenta?</string>
     <string name="registrate">Registrarse</string>
@@ -54,6 +54,31 @@
     <string name="incorrect_password">Las credenciales son incorrectas</string>
     <string name="copyright">Copyright © 2022 All rights reserved</string>
     <string name="no_connection">Por favor conecte el dispositivo</string>
+    <string name="about">Acerca de</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="close">Salir</string>
+    <string name="log_out_application">Está seguro que desea cerrar sesión?</string>
+    <string name="lectura_guardada">Lectura Guardada</string>
+    <string name="otorga_permisos">Otorga los permisos</string>
+    <string name="nombre_empresa">EMPRESA ELÉCTRICA MUNICIPAL DE JOYABAJ</string>
+    <string name="dots_divider">..............................................................</string>
+    <string name="mult_divider">**************************************************************</string>
+    <string name="lector">LECTOR</string>
+    <string name="client">CLIENTE</string>
+    <string name="nit">NIT: C.F.</string>
+    <string name="no_contador">No. CONTADOR</string>
+    <string name="address">DIRECCIÓN</string>
+    <string name="periodo_facturacion">PERIODO DE FACTURACIÓN</string>
+    <string name="suggest_date">FECHA SUGERIDA DE PAGO</string>
+    <string name="por_pagar">LECTURAS POR PAGAR</string>
+    <string name="concept">Concepto</string>
+    <string name="importe">Importe</string>
+    <string name="alumbrado">Alumbrado público</string>
+    <string name="consumo_iva">Consumo + IVA</string>
+    <string name="cargo_fijo_iva">Cargo fijo + IVA</string>
+    <string name="inde_iva">Aporte Inde + IVA</string>
+    <string name="mora">Mora</string>
+    <string name="total">Total a pagar</string>
 
 
 </resources>

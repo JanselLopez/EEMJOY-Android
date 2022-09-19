@@ -10,6 +10,7 @@ import com.jansellopez.eemjoy.core.CheckConnect
 import com.jansellopez.eemjoy.data.model.Client
 import com.jansellopez.eemjoy.databinding.ActivityClientsBinding
 import com.jansellopez.eemjoy.ui.clients.adapter.ClientAdapter
+import com.jansellopez.eemjoy.ui.lecturas.LecturaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,12 +33,28 @@ class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
         val city = bundle!!.getInt("city")
         val zone = bundle.getInt("zone")
+        val zoneName = bundle.getString("zone_name")
 
-        clientsViewModel.onCreate(city, zone, CheckConnect(this))
+        clientsViewModel.onCreate(city, zone, CheckConnect(this),this)
 
         clientsViewModel.users.observe(this,{
-            clientAdapter = ClientAdapter(it as MutableList<Client>,zone)
-            binding.rvClients.adapter = clientAdapter
+            clientsViewModel.lecturas.observe(this,{ lecturas ->
+                clientsViewModel.period.observe(this,{ period->
+                    clientsViewModel.tarifas.observe(this,{ tarifas ->
+                        clientAdapter = ClientAdapter(
+                            it as MutableList<Client>,
+                            zone,
+                            this,
+                            binding.coordinator,
+                            lecturas,
+                            zoneName?:"",
+                            period,
+                            tarifas
+                        )
+                        binding.rvClients.adapter = clientAdapter
+                    })
+                })
+            })
         })
 
         clientsViewModel.loading.observe(this,{

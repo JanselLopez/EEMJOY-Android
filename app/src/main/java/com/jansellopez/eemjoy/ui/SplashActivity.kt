@@ -17,8 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
 
-    private val loginViewModel:LoginViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
             startActivity(Intent(this,LoginActivity::class.java))

@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
                     loginViewModel.login(
                         User(
                             binding.tvEmail.text.toString(),
-                            binding.tvPassword.text.toString()
+                            binding.tvPassword.text.toString(),
                         ),
                         this,
                         binding.coordinator,

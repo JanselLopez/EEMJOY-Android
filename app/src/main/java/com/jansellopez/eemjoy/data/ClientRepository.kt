@@ -1,10 +1,13 @@
 package com.jansellopez.eemjoy.data
 
+import android.content.Context
+import android.util.Log
 import com.jansellopez.eemjoy.data.database.dao.ClientDao
 import com.jansellopez.eemjoy.data.database.entities.*
 import com.jansellopez.eemjoy.data.model.*
 import com.jansellopez.eemjoy.data.network.UserService
 import com.jansellopez.eemjoy.data.network.modelnetwork.toDomain
+import com.jansellopez.eemjoy.data.network.responses.ResponseAddLecturas
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -17,7 +20,7 @@ class ClientRepository @Inject constructor(
 
     suspend fun login(user: User): Token = userService.login(user.toDomain()).toDomain()
 
-    suspend fun getCitiesFromApi():List<City> = userService.getCities(TokenRepository.getToken()).map { it.toDomain() }
+    suspend fun getCitiesFromApi(context:Context):List<City> = userService.getCities(TokenRepository.getToken(),context).map { it.toDomain() }
 
     suspend fun getCitiesFromDataBase():List<City> = userDao.getAllCities()!!.map { it.toDomain() }
 
@@ -25,7 +28,7 @@ class ClientRepository @Inject constructor(
 
     suspend fun deleteAllCitiesFromDatabase() = userDao.clearCities()
 
-    suspend fun getZones():List<Zone> = userService.getZones(TokenRepository.getToken()).map { it.toDomain() }
+    suspend fun getZones(context:Context):List<Zone> = userService.getZones(TokenRepository.getToken(),context).map { it.toDomain() }
 
     suspend fun getZonesFromDataBase():List<Zone> = userDao.getAllZones()!!.map { it.toDomain() }
 
@@ -33,7 +36,7 @@ class ClientRepository @Inject constructor(
 
     suspend fun deleteAllZonesFromDatabase() = userDao.clearZones()
 
-    suspend fun getClientsFromApi(city: Int, zone: Int):List<Client> = userService.getClients(TokenRepository.getToken(),city,zone).map { it.toDomain() }
+    suspend fun getClientsFromApi(city: Int, zone: Int,context:Context):List<Client> = userService.getClients(TokenRepository.getToken(),city,zone,context).map { it.toDomain() }
 
     suspend fun getClientsFromDataBase(city:Int,zone:Int):List<Client> = userDao.getAllClients(city,zone)!!.map { it.toDomain() }
 
@@ -41,11 +44,16 @@ class ClientRepository @Inject constructor(
 
     suspend fun deleteAllClientsFromDatabase() = userDao.clearClients()
 
-    suspend fun getLecturasFromApi(zone: Int):List<Lectura> = userService.getLecturas(TokenRepository.getToken(),zone).map { it.toDomain() }
+    suspend fun getLecturasFromApi(zone: Int,context:Context):List<Lectura> = userService.getLecturas(TokenRepository.getToken(),zone,context).map { it.toDomain() }
 
     suspend fun getLecturasFromDataBase(clientId:Int):List<Lectura> = userDao.getAllLecturas(clientId)!!.map { it.toDomain() }
 
-    suspend fun getLastLecturaFromDataBase(clientId: Int):Lectura = userDao.getLastLectura(clientId)!!.toDomain()
+    suspend fun getLastLecturaFromDataBase(clientId: Int):Lectura {
+        return when(val lectura = userDao.getLastLectura(clientId)){
+            null-> Lectura(-1,0,0,0,0,"",0,0,0,0,"")
+            else -> lectura.toDomain()
+        }
+    }
 
     suspend fun pushLecturasToDatabase(Lecturas:List<LecturaEntity>) = userDao.insertLecturas(Lecturas)
 
@@ -53,8 +61,8 @@ class ClientRepository @Inject constructor(
 
     suspend fun deleteAllLecturasFromDatabase() = userDao.clearLecturas()
 
-    suspend fun getPeriodFromApi():Period {
-        val period = userService.getPeriod(TokenRepository.getToken())
+    suspend fun getPeriodFromApi(context:Context):Period {
+        val period = userService.getPeriod(TokenRepository.getToken(),context)
         val calEnd: Calendar = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         calEnd.time = sdf.parse(period.endDate)
@@ -62,6 +70,7 @@ class ClientRepository @Inject constructor(
         calBegin.time = sdf.parse(period.beginDate)
         val calPay: Calendar = Calendar.getInstance()
         calPay.time = sdf.parse(period.paymentDate)
+        Log.e("Fecha Periodo","Begin: ${calBegin.get(Calendar.DAY_OF_MONTH)}-${calBegin.get(Calendar.MONTH)} Final: ${calEnd.get(Calendar.DAY_OF_MONTH)}-${calEnd.get(Calendar.MONTH)}")
         return period.toDomain(endDateC = calEnd,beginDateC = calBegin,paymentDateC = calPay)
     }
 
@@ -79,5 +88,22 @@ class ClientRepository @Inject constructor(
     suspend fun pushPeriodsToDatabase(period:PeriodEntity) = userDao.insertPeriod(period)
 
     suspend fun deleteAllPeriodsFromDatabase() = userDao.clearPeriods()
+
+    suspend fun pushLecturaToApi(lecturaAdd: LecturaAdd,context: Context):ResponseAddLecturas = userService.pushLecturas(TokenRepository.getToken(),lecturaAdd.toDomain(),context)
+
+    suspend fun pushLecturaForAddToDatabase(lecturaEntityAdd: LecturaEntityAdd) = userDao.insertLecturaAdd(lecturaEntityAdd)
+
+    suspend fun clearLecturasAdd() = userDao.clearLecturasAdd()
+
+    suspend fun getLecturasFromDataBase():List<LecturaAdd> = userDao.getAllLecturasForAdd()!!.map { it.toDomain() }
+
+    //Tarifas
+    suspend fun getTarifasFromApi(context:Context):List<Tarifa> = userService.getTarifas(TokenRepository.getToken(),context).map { it.toDomain() }
+
+    suspend fun getTarifasFromDataBase():List<Tarifa> = userDao.getTarifas()!!.map { it.toDomain() }
+
+    suspend fun pushTarifasToDatabase(tarifas:List<TarifasEntity>) = userDao.insertTarifas(tarifas)
+
+    suspend fun deleteAllTarifasFromDatabase() = userDao.clearTarifas()
 
 }
