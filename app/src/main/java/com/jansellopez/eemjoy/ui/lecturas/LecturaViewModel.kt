@@ -28,7 +28,8 @@ class LecturaViewModel @Inject constructor(
     private val pushOneLecturaToApi: PushOneLecturaToApi,
     private val getTarifaOfLecturaUseCase: GetTarifaOfLecturaUseCase,
     private val updateLecturaUseCase: UpdateLecturaUseCase,
-    private val getMaxIdForAddUseCase: GetMaxIdForAddUseCase
+    private val getMaxIdForAddUseCase: GetMaxIdForAddUseCase,
+    private val pushAllsLecturasUseCase: PushAllsLecturasUseCase,
 ):ViewModel() {
     val lecturas = MutableLiveData<List<Lectura>>()
     val loading = MutableLiveData<Boolean>()
@@ -58,7 +59,7 @@ class LecturaViewModel @Inject constructor(
                 Log.e("Lectura Add ViewModel","${lectura.configuracion_id} $numberCount ${lectura.kilovatios} ${lectura.lectura_anterior?:0}")
                 val response = pushOneLecturaToApi(LecturaAdd(0,lectura.configuracion_id,numberCount,lectura.lectura_actual,lectura.lectura_anterior?:0),context)
                 lectura.agregada =1
-                 CustomSnackBar(activity,coordinatorLayout).showNotification(response.report)
+                Toast.makeText(context,response.report,Toast.LENGTH_SHORT).show()
             }else{
                 pushOneLecturaToDatabaseUseCase(LecturaAdd(idForAdd,lectura.configuracion_id,numberCount,lectura.lectura_actual,lectura.lectura_anterior?:0))
             }
@@ -79,5 +80,11 @@ class LecturaViewModel @Inject constructor(
         }
     }
 
+    fun pushAll(context: Context){
+        viewModelScope.launch {
+            if (CheckConnect(context))
+                pushAllsLecturasUseCase(context)
+        }
+    }
 
 }

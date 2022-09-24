@@ -1,6 +1,7 @@
 package com.jansellopez.eemjoy.ui.clients
 
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
@@ -11,10 +12,12 @@ import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jansellopez.eemjoy.core.CheckConnect
+import com.jansellopez.eemjoy.data.model.City
 import com.jansellopez.eemjoy.data.model.Client
 import com.jansellopez.eemjoy.databinding.ActivityClientsBinding
 import com.jansellopez.eemjoy.ui.clients.adapter.ClientAdapter
 import com.jansellopez.eemjoy.ui.lecturas.LecturaViewModel
+import com.jansellopez.eemjoy.ui.zones.ZonesActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +30,8 @@ class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
     private val clientsViewModel:ClientsViewModel by viewModels()
 
+    private var city: Int? =null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -35,11 +40,11 @@ class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
         val bundle = intent.extras
 
-        val city = bundle!!.getInt("city")
+        city = bundle!!.getInt("city")
         val zone = bundle.getInt("zone")
         val zoneName = bundle.getString("zone_name")
 
-        clientsViewModel.onCreate(city, zone, CheckConnect(this),this)
+        clientsViewModel.onCreate(city!!, zone, CheckConnect(this),this)
 
         clientsViewModel.users.observe(this,{
             clientsViewModel.lecturas.observe(this,{ lecturas ->
@@ -54,7 +59,7 @@ class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
                                 zoneName ?: "",
                                 period,
                                 tarifas,
-                                city
+                                city!!
                             )
                         binding.rvClients.adapter = clientAdapter
                     })
@@ -84,7 +89,7 @@ class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         })
 
         binding.toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            loadBack()
         }
 
     }
@@ -98,4 +103,14 @@ class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         return false
     }
 
+    override fun onBackPressed() {
+        loadBack()
+    }
+
+    private fun loadBack(){
+        Intent(this,ZonesActivity::class.java).apply {
+            putExtra("city",city)
+            startActivity(this)
+        }
+    }
 }

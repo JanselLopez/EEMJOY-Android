@@ -19,6 +19,7 @@ import com.jansellopez.eemjoy.data.userdata.SharedPreferenceManager
 import com.jansellopez.eemjoy.ui.login.LoginActivity
 import android.view.Menu
 import androidx.appcompat.app.AlertDialog
+import cu.jansellopez.custom_snackbars.CustomSnackBar
 import java.util.*
 
 
@@ -29,12 +30,13 @@ class HomeActivity : AppCompatActivity() {
         ActivityHomeBinding.inflate(layoutInflater)
     }
     private val homeViewModel:HomeViewModel by viewModels()
+    private lateinit var customSnackBar:CustomSnackBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val bundle = intent.extras
+        customSnackBar = CustomSnackBar(this,binding.coordinator)
 
         binding.tvUser.text = SharedPreferenceManager.getINstance(this).token.username
 
@@ -83,6 +85,10 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         return true
+    }
+
+    override fun onBackPressed() {
+        customSnackBar.onBackPressedToExit()
     }
 
 }

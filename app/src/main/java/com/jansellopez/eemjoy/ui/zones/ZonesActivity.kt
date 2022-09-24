@@ -1,5 +1,6 @@
 package com.jansellopez.eemjoy.ui.zones
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jansellopez.eemjoy.core.CheckConnect
 import com.jansellopez.eemjoy.databinding.ActivityZonesBinding
+import com.jansellopez.eemjoy.ui.home.HomeActivity
 import com.jansellopez.eemjoy.ui.zones.adapter.ZoneAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,9 +52,13 @@ class ZonesActivity : AppCompatActivity() {
         })
 
         binding.toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            startActivity(Intent(this,HomeActivity::class.java))
         }
 
+    }
+
+    override fun onBackPressed() {
+        startActivity(Intent(this,HomeActivity::class.java))
     }
 
 

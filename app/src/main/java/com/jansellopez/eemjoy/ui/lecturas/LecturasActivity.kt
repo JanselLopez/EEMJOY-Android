@@ -1,5 +1,6 @@
 package com.jansellopez.eemjoy.ui.lecturas
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -21,6 +22,10 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
+import android.view.MotionEvent
+import android.view.View
+import androidx.core.view.isVisible
+
 
 @AndroidEntryPoint
 class LecturasActivity : AppCompatActivity() {
@@ -31,6 +36,8 @@ class LecturasActivity : AppCompatActivity() {
     private var zone:Int? = null
     private var city:Int? = null
     private var zoneName:String? = null
+    private var dX = 0f
+    var dY: Float = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +53,25 @@ class LecturasActivity : AppCompatActivity() {
 
         lecturaViewModel.onCreate(clientId)
 
-        binding.fabAdd.setOnClickListener {
-            getLectura(clientId, zone!!)
+        binding.fabAdd.setOnTouchListener { view, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    dX = view.x - event.rawX
+                    dY = view.y - event.rawY
+                }
+                MotionEvent.ACTION_MOVE -> view.animate()
+                    .x(event.rawX + dX)
+                    .y(event.rawY + dY)
+                    .setDuration(0)
+                    .start()
+                else ->{
+                    getLectura(clientId, zone!!)
+                    false
+                }
+            }
+            true
         }
+
         binding.toolbar.setNavigationOnClickListener {
             loadBack()
         }
@@ -60,6 +83,15 @@ class LecturasActivity : AppCompatActivity() {
                 (bundle!!.getString("counter")?:0) as String
             )
         })
+
+        lecturaViewModel.loading.observe(this,{
+            binding.progressCircular.isVisible = it
+            binding.btnUpload.isVisible = !it
+        })
+
+        binding.btnUpload.setOnClickListener {
+            lecturaViewModel.pushAll(this)
+        }
 
     }
 
@@ -76,7 +108,8 @@ class LecturasActivity : AppCompatActivity() {
         }
     }
 
-    private fun getLectura(clientId:Int,zone:Int){
+    @SuppressLint("ClickableViewAccessibility")
+    private fun getLectura(clientId:Int, zone:Int){
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setTitle(resources.getString(R.string.lectura))
         val input = EditText(this)
@@ -110,8 +143,11 @@ class LecturasActivity : AppCompatActivity() {
                             actualDate,
                             0,
                             0
-                        ), this, intent.extras!!.getString("counter")!!.toInt(),clientId
-                    ,this,binding.coordinator)
+                        ), this,
+                        intent.extras!!.getString("counter")!!.toInt(),
+                        clientId
+                    ,this,
+                        binding.coordinator)
                 }else
                     CustomSnackBar(this,binding.coordinator).showError(resources.getString(R.string.introduce_some_value))
             }else

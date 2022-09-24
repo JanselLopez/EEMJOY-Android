@@ -4,6 +4,7 @@
         the layout as CoordinatorLayout.
         This is the first thing we need to do.-->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id = "@+id/coordinator"
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
