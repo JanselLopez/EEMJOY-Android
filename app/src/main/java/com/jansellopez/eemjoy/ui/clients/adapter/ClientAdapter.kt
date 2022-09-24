@@ -16,11 +16,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.snackbar.Snackbar
 import com.itextpdf.text.*
 import com.itextpdf.text.pdf.PdfWriter
 import com.jansellopez.eemjoy.R
-import com.jansellopez.eemjoy.data.TokenRepository
 import com.jansellopez.eemjoy.data.model.Client
 import com.jansellopez.eemjoy.data.model.Lectura
 import com.jansellopez.eemjoy.data.model.Period
@@ -36,6 +34,11 @@ import java.util.stream.Collectors
 import com.itextpdf.text.pdf.draw.VerticalPositionMark
 import com.jansellopez.eemjoy.data.model.Tarifa
 import com.jansellopez.eemjoy.data.userdata.SharedPreferenceManager
+import android.content.ActivityNotFoundException
+import android.net.Uri
+
+import androidx.core.content.ContextCompat.startActivity
+import java.io.File
 
 
 class ClientAdapter(
@@ -46,7 +49,8 @@ class ClientAdapter(
     private val lecturas: List<Lectura>,
     private val zoneName:String,
     private val periodFull: Period,
-    private val tarifas: List<Tarifa>
+    private val tarifas: List<Tarifa>,
+    private val city:Int
 ):RecyclerView.Adapter<ClientAdapter.ClientViewHolder>() {
 
 
@@ -67,36 +71,49 @@ class ClientAdapter(
     }
 
     fun filter(str:String){
-        if(str.isEmpty()) {
-            users.clear()
-            users.addAll(all)
-        }else{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val collection =
-                    users.stream()
-                        .filter { i -> ((i.numberCount.lowercase(Locale.getDefault()).contains(str.lowercase(
-                            Locale.getDefault()
-                        ))) || ((i.firstName+i.firstLastName+i.secondLastName).lowercase(Locale.getDefault()).contains(str.lowercase(Locale.getDefault())))) }
-                        .collect(Collectors.toList())
-                users.clear()
-                users.addAll(collection)
-            } else {
-                users.clear()
-                for(r in all){
-                    if( ((r.numberCount.lowercase(Locale.getDefault()).contains(str.lowercase(
-                            Locale.getDefault()
-                        ))) || ((r.firstName+r.firstLastName+r.secondLastName).lowercase(Locale.getDefault()).contains(str.lowercase(Locale.getDefault())))))
-                        users.add(r)
+
+                if (str.isEmpty()) {
+                    users.clear()
+                    users.addAll(all)
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        val collection =
+                            users.stream()
+                                .filter { i ->
+                                    ((i.numberCount.lowercase(Locale.getDefault()).contains(
+                                        str.lowercase(
+                                            Locale.getDefault()
+                                        )
+                                    )) || ((i.firstName + i.firstLastName + i.secondLastName).lowercase(
+                                        Locale.getDefault()
+                                    ).contains(str.lowercase(Locale.getDefault()))))
+                                }
+                                .collect(Collectors.toList())
+                        users.clear()
+                        users.addAll(collection)
+                    } else {
+                        users.clear()
+                        for (r in all) {
+                            if (((r.numberCount.lowercase(Locale.getDefault()).contains(
+                                    str.lowercase(
+                                        Locale.getDefault()
+                                    )
+                                )) || ((r.firstName + r.firstLastName + r.secondLastName).lowercase(
+                                    Locale.getDefault()
+                                ).contains(str.lowercase(Locale.getDefault()))))
+                            )
+                                users.add(r)
+                        }
+                    }
                 }
-            }
-        }
-        notifyDataSetChanged()
+                notifyDataSetChanged()
+
     }
 
     override fun onBindViewHolder(holder: ClientViewHolder, position: Int) {
         with(holder){
             with(users[position]){
-                binding.tvContador.text = numberCount.toString()
+                binding.tvContador.text = numberCount
                 binding.tvName.text = "$firstName $firstLastName $secondLastName"
                 binding.btnGo.setOnClickListener {
                     val bottomSheetDialog = BottomSheetDialog(context,R.style.BottomSheetDialogTheme)
@@ -109,32 +126,35 @@ class ClientAdapter(
                             putExtra("name", binding.tvName.text)
                             putExtra("zone",zone)
                             putExtra("clientId",id)
+                            putExtra("city",city)
+                            putExtra("zone_name",zoneName)
                             context.startActivity(this)
                         }
                     }
                     bindingBS.printAccount.setOnClickListener {
                         if(isStoragePermissionGranted()) {
                             val document = Document()
-                            val calendar = Calendar.getInstance()
-                            val file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + "/Tarifa_${numberCount}_${calendar.get(Calendar.DAY_OF_MONTH)}${calendar.get(Calendar.MONTH)+1}${calendar.get(Calendar.YEAR)}.pdf"
-                            PdfWriter.getInstance(document, FileOutputStream(file))
+                            Calendar.getInstance()
+                            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + "/Tarifa.pdf"
+                            PdfWriter.getInstance(document, FileOutputStream(path))
                             document.open()
-                            val d = AppCompatResources.getDrawable(context,R.drawable.header_ticker_200_60)
+                            val d = AppCompatResources.getDrawable(context,R.drawable.header_ticker)
                             val bitmap = (d as BitmapDrawable).bitmap
                             val stream = ByteArrayOutputStream()
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                             val bitmapData = stream.toByteArray()
                             val header = Jpeg(bitmapData)
                             header.alignment = Image.ALIGN_CENTER
+                            header.scaleToFit(PageSize.A4.width-document.leftMargin()-document.rightMargin(), PageSize.A4.height)
                             document.add(header)
 
                             val titleFont =
-                                Font(Font.FontFamily.COURIER, 25.0f, Font.BOLD)
+                                Font(Font.FontFamily.COURIER, 28.0f, Font.BOLD)
                             val titleParagraph = Paragraph(context.resources.getString(R.string.nombre_empresa),titleFont)
                             titleParagraph.alignment = Paragraph.ALIGN_CENTER
                             document.add(titleParagraph)
                             val normalFont =
-                                Font(Font.FontFamily.COURIER, 14.0f)
+                                Font(Font.FontFamily.COURIER, 25.0f)
                             val author = Paragraph("${context.resources.getString(R.string.lector)}: ${SharedPreferenceManager.getINstance(context).token.username}",normalFont)
                             document.add(author)
 
@@ -168,13 +188,13 @@ class ClientAdapter(
                             document.add(dotsDivider)
 
                             val subtitleFont =
-                                Font(Font.FontFamily.COURIER, 20.0f, Font.BOLD)
+                                Font(Font.FontFamily.COURIER, 26.0f, Font.BOLD)
                             val porPagar = Paragraph(context.resources.getString(R.string.por_pagar),subtitleFont)
                             porPagar.alignment = Paragraph.ALIGN_CENTER
                             document.add(porPagar)
 
                             val headText =
-                                Font(Font.FontFamily.COURIER, 16.0f, Font.BOLD)
+                                Font(Font.FontFamily.COURIER, 25.0f, Font.BOLD)
 
                             val glue = Chunk(VerticalPositionMark())
                             val concept = Paragraph(context.resources.getString(R.string.concept),headText)
@@ -204,7 +224,7 @@ class ClientAdapter(
                                             normalFont
                                         )
                                         consumo.add(Chunk(glue))
-                                        consumo.add(Paragraph("Q"+(it.cobro_real.toInt()+it.iva), normalFont))
+                                        consumo.add(Paragraph("Q"+((lectura.kilovatios * it.kwh)+it.iva), normalFont))
                                         document.add(consumo)
                                         val cargoFijo = Paragraph(
                                             context.resources.getString(R.string.cargo_fijo_iva),
@@ -242,7 +262,17 @@ class ClientAdapter(
                                             headText
                                         )
                                         total.add(Chunk(glue))
-                                        total.add(Paragraph("Q", headText))
+
+                                        val totalAPagar:Double = if(it.cobro_real == "1") {
+                                                (((lectura.kilovatios * it.kwh)+it.iva)
+                                                        + it.street_lighting + (it.fixed_charge + it.fixed_charge_iva)) - (lectura.kilovatios * it.inde_contribution)
+                                            }else{
+                                                (((it.range_max * it.kwh)+it.iva)
+                                                        + it.street_lighting + (it.fixed_charge + it.fixed_charge_iva)) - (it.range_max* it.inde_contribution)
+                                            }
+
+                                        total.add(Paragraph("Q$totalAPagar", headText))
+
                                         document.add(total)
                                         return@breaking
                                     }
@@ -251,12 +281,27 @@ class ClientAdapter(
                             }
                             document.close()
                             bottomSheetDialog.dismiss()
-                            Snackbar.make(coordinatorLayout,context.resources.getString(R.string.lectura_guardada),Snackbar.LENGTH_SHORT).show()
+                            val file =
+                                File(path)
+                            val target = Intent(Intent.ACTION_VIEW)
+                            target.setDataAndType(Uri.fromFile(file), "application/pdf")
+                            target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+
+                            val intent = Intent.createChooser(target, context.resources.getString(R.string.open_pdf))
+                            try {
+                                context.startActivity(intent)
+                            } catch (e: ActivityNotFoundException) {
+                                // Instruct the user to install a PDF reader here, or something
+                                CustomSnackBar(activity,coordinatorLayout).showError(context.resources.getString(R.string.error_guardando_el_pdf))
+                            }
                         }else{
                             bottomSheetDialog.dismiss()
                             CustomSnackBar(activity,coordinatorLayout).showError(context.resources.getString(R.string.otorga_permisos))
                         }
                     }
+
+
+
                     bottomSheetDialog.apply {
                         setContentView(bindingBS.root)
                         show()

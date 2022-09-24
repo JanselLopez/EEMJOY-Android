@@ -1,5 +1,6 @@
 package com.jansellopez.eemjoy.ui.lecturas
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -12,10 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jansellopez.eemjoy.R
 import com.jansellopez.eemjoy.data.model.Lectura
 import com.jansellopez.eemjoy.databinding.ActivityLecturasBinding
+import com.jansellopez.eemjoy.ui.clients.ClientsActivity
+import com.jansellopez.eemjoy.ui.clients.ClientsViewModel
+import cu.jansellopez.custom_snackbars.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class LecturasActivity : AppCompatActivity() {
@@ -23,6 +28,9 @@ class LecturasActivity : AppCompatActivity() {
     private val binding:ActivityLecturasBinding by lazy { ActivityLecturasBinding.inflate(layoutInflater)}
     private var lectura:String? = null
     private val lecturaViewModel:LecturaViewModel by viewModels()
+    private var zone:Int? = null
+    private var city:Int? = null
+    private var zoneName:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,23 +40,40 @@ class LecturasActivity : AppCompatActivity() {
         binding.toolbar.title = bundle!!.getString("counter")
         binding.toolbar.subtitle = bundle.getString("name")
         val clientId = bundle.getInt("clientId")
-        val zone = bundle.getInt("zone")
+        zone = bundle.getInt("zone")
+        city = bundle!!.getInt("city")
+        zoneName = bundle.getString("zone_name")
 
         lecturaViewModel.onCreate(clientId)
 
         binding.fabAdd.setOnClickListener {
-            getLectura(clientId,zone)
+            getLectura(clientId, zone!!)
         }
         binding.toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            loadBack()
         }
 
         binding.rvLecturas.layoutManager = LinearLayoutManager(this)
 
         lecturaViewModel.lecturas.observe(this,{
-            binding.rvLecturas.adapter = LecturaAdapter(it)
+            binding.rvLecturas.adapter = LecturaAdapter(it,lecturaViewModel,this,
+                (bundle!!.getString("counter")?:0) as String
+            )
         })
 
+    }
+
+    override fun onBackPressed() {
+        loadBack()
+    }
+
+    private fun loadBack(){
+        Intent(this,ClientsActivity::class.java).apply {
+            putExtra("city",city)
+            putExtra("zone",zone)
+            putExtra("zone_name",zoneName)
+            startActivity(this)
+        }
     }
 
     private fun getLectura(clientId:Int,zone:Int){
@@ -82,18 +107,15 @@ class LecturasActivity : AppCompatActivity() {
                             lectura!!.toInt() - lecturaViewModel.lastLectura.value!!.lectura_actual,
                             0,
                             0,
-                            actualDate
+                            actualDate,
+                            0,
+                            0
                         ), this, intent.extras!!.getString("counter")!!.toInt(),clientId
-                    )
-
-
-
-                }else{
-                    Toast.makeText(this,"Introduzca algun valor",Toast.LENGTH_SHORT).show()
-                }
-            }else{
-                Toast.makeText(this,"Esta fuera del periodo",Toast.LENGTH_SHORT).show()
-            }
+                    ,this,binding.coordinator)
+                }else
+                    CustomSnackBar(this,binding.coordinator).showError(resources.getString(R.string.introduce_some_value))
+            }else
+                CustomSnackBar(this,binding.coordinator).showError(resources.getString(R.string.outside))
         }
         builder.setNegativeButton(android.R.string.cancel
         ) { dialog, _ ->

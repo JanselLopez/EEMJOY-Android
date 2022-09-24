@@ -1,6 +1,8 @@
 package com.jansellopez.eemjoy.ui.home
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -34,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
 
         val bundle = intent.extras
 
-        binding.tvUser.text = bundle!!.getString("email","")
+        binding.tvUser.text = SharedPreferenceManager.getINstance(this).token.username
 
         binding.rvCities.layoutManager = GridLayoutManager(this,2)
 
@@ -49,6 +51,14 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel.loading.observe(this,{
             binding.rvCities.isVisible = !it
             binding.shimmer.isVisible =it
+            requestedOrientation = if(it){
+                if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                else
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            }
+            else
+                ActivityInfo.SCREEN_ORIENTATION_SENSOR
         })
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

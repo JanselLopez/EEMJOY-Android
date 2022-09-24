@@ -1,20 +1,16 @@
 package com.jansellopez.eemjoy.ui.login
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import com.jansellopez.eemjoy.core.CheckConnect
 import com.jansellopez.eemjoy.data.TokenRepository
-import com.jansellopez.eemjoy.data.model.Token
 import com.jansellopez.eemjoy.data.model.User
 import com.jansellopez.eemjoy.data.userdata.SharedPreferenceManager
 import com.jansellopez.eemjoy.databinding.ActivityLoginBinding
@@ -92,11 +88,19 @@ class LoginActivity : AppCompatActivity() {
             binding.tvPassword.isEnabled = !it
             binding.btnLogin.isVisible = !it
             binding.progressCircular.isVisible =it
+            requestedOrientation = if(it){
+                if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                else
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            }
+            else
+                ActivityInfo.SCREEN_ORIENTATION_SENSOR
         })
     }
 
     override fun onBackPressed() {
-        customSnackBar.onBackPressed()
+        customSnackBar.onBackPressedToExit()
     }
 
 

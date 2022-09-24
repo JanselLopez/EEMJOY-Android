@@ -1,5 +1,7 @@
 package com.jansellopez.eemjoy.ui.zones
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -37,6 +39,14 @@ class ZonesActivity : AppCompatActivity() {
         zonesViewModel.loading.observe(this,{
             binding.rvZones.isVisible = !it
             binding.shimmer.isVisible =it
+            requestedOrientation = if(it){
+                if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                else
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            }
+            else
+                ActivityInfo.SCREEN_ORIENTATION_SENSOR
         })
 
         binding.toolbar.setNavigationOnClickListener {

@@ -61,8 +61,8 @@
     <string name="lectura_guardada">Lectura Guardada</string>
     <string name="otorga_permisos">Otorga los permisos</string>
     <string name="nombre_empresa">EMPRESA ELÉCTRICA MUNICIPAL DE JOYABAJ</string>
-    <string name="dots_divider">..............................................................</string>
-    <string name="mult_divider">**************************************************************</string>
+    <string name="dots_divider">..................................</string>
+    <string name="mult_divider">**********************************</string>
     <string name="lector">LECTOR</string>
     <string name="client">CLIENTE</string>
     <string name="nit">NIT: C.F.</string>
@@ -79,6 +79,9 @@
     <string name="inde_iva">Aporte Inde + IVA</string>
     <string name="mora">Mora</string>
     <string name="total">Total a pagar</string>
-
+    <string name="open_pdf">Abrir Pdf</string>
+    <string name="error_guardando_el_pdf">Error guardando el Pdf</string>
+    <string name="introduce_some_value">Introduzca algun valor</string>
+    <string name="outside">Se encuentra fuera de periodo</string>
 
 </resources>

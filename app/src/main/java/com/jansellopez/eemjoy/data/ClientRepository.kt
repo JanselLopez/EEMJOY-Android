@@ -50,7 +50,7 @@ class ClientRepository @Inject constructor(
 
     suspend fun getLastLecturaFromDataBase(clientId: Int):Lectura {
         return when(val lectura = userDao.getLastLectura(clientId)){
-            null-> Lectura(-1,0,0,0,0,"",0,0,0,0,"")
+            null-> Lectura(-1,0,0,0,0,"",0,0,0,0,"",1,0)
             else -> lectura.toDomain()
         }
     }
@@ -105,5 +105,12 @@ class ClientRepository @Inject constructor(
     suspend fun pushTarifasToDatabase(tarifas:List<TarifasEntity>) = userDao.insertTarifas(tarifas)
 
     suspend fun deleteAllTarifasFromDatabase() = userDao.clearTarifas()
+
+    //updates
+    suspend fun updateLectura(lectura: Lectura) = userDao.updateLecturas(lectura.toDomain())
+
+    suspend fun updateLecturaAdd(lecturaEntityAdd: LecturaEntityAdd) = userDao.updateLecturasAdd(lecturaEntityAdd)
+
+    suspend fun getMaxIdForAdd() = userDao.getMaxIdOfLectForAdd()?:1
 
 }

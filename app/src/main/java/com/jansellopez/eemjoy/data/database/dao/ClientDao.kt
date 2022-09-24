@@ -2,6 +2,7 @@ package com.jansellopez.eemjoy.data.database.dao
 
 import androidx.room.*
 import com.jansellopez.eemjoy.data.database.entities.*
+import com.jansellopez.eemjoy.data.model.LecturaAdd
 
 @Dao
 interface ClientDao {
@@ -51,6 +52,9 @@ interface ClientDao {
     @Query("DELETE FROM lecturas_table")
     suspend fun clearLecturas()
 
+    @Update
+    suspend fun updateLecturas(lecturaEntity: LecturaEntity)
+
     //lecturas for add
     @Query("SELECT * FROM lecturas_add_table")
     suspend fun getAllLecturasForAdd():List<LecturaEntityAdd>?
@@ -60,6 +64,12 @@ interface ClientDao {
 
     @Query("DELETE FROM lecturas_add_table")
     suspend fun clearLecturasAdd()
+
+    @Query("SELECT max(id) FROM lecturas_add_table")
+    suspend fun getMaxIdOfLectForAdd():Int?
+
+    @Update
+    suspend fun updateLecturasAdd(lecturaEntityAdd: LecturaEntityAdd)
 
     //periods
     @Query("SELECT * FROM periods_table ORDER BY paymentDate DESC LIMIT 1")

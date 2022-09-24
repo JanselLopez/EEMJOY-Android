@@ -1,5 +1,9 @@
 package com.jansellopez.eemjoy.ui.clients
 
+import android.app.Activity
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.SearchView
@@ -17,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
     androidx.appcompat.widget.SearchView.OnQueryTextListener {
 
-    private lateinit var clientAdapter:ClientAdapter
+    private var clientAdapter:ClientAdapter? = null
 
     private val binding:ActivityClientsBinding by lazy{ ActivityClientsBinding.inflate(layoutInflater) }
 
@@ -41,16 +45,17 @@ class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
             clientsViewModel.lecturas.observe(this,{ lecturas ->
                 clientsViewModel.period.observe(this,{ period->
                     clientsViewModel.tarifas.observe(this,{ tarifas ->
-                        clientAdapter = ClientAdapter(
-                            it as MutableList<Client>,
-                            zone,
-                            this,
-                            binding.coordinator,
-                            lecturas,
-                            zoneName?:"",
-                            period,
-                            tarifas
-                        )
+                            clientAdapter = ClientAdapter(
+                                if(!it.isNullOrEmpty()) it as MutableList<Client> else emptyList<Client>() as MutableList,
+                                zone,
+                                this,
+                                binding.coordinator,
+                                if(!it.isNullOrEmpty()) lecturas else emptyList(),
+                                zoneName ?: "",
+                                period,
+                                tarifas,
+                                city
+                            )
                         binding.rvClients.adapter = clientAdapter
                     })
                 })
@@ -60,6 +65,16 @@ class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         clientsViewModel.loading.observe(this,{
             binding.rvClients.isVisible = !it
             binding.shimmer.isVisible =it
+            binding.svClient.isEnabled = !it
+            binding.svClient.isVisible = !it
+            requestedOrientation = if(it){
+                if(resources.configuration.orientation == ORIENTATION_LANDSCAPE)
+                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                else
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            }
+            else
+                ActivityInfo.SCREEN_ORIENTATION_SENSOR
         })
 
         binding.svClient.setOnQueryTextListener(this)
@@ -78,9 +93,9 @@ class ClientsActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
 
     override fun onQueryTextChange(p0: String?): Boolean {
-        clientAdapter.filter(p0!!)
+        clientAdapter?.filter(p0!!)
+
         return false
     }
-
 
 }

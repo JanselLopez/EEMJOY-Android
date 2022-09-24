@@ -12,10 +12,11 @@ class PushAllsLecturasUseCase @Inject constructor(
     private val repository: ClientRepository
 ) {
     suspend operator fun invoke(context: Context){
-            repository.getLecturasFromDataBase().forEach {
-                val response = repository.pushLecturaToApi(it,context)
-                Toast.makeText(context,response.report,Toast.LENGTH_LONG).show()
-            }
-            repository.clearLecturasAdd()
+            val lecturasAdd = repository.getLecturasFromDataBase()
+                    lecturasAdd.forEach {
+                    val response = repository.pushLecturaToApi(it,context)
+                    Toast.makeText(context,response.report,Toast.LENGTH_LONG).show()
+                }
+        repository.clearLecturasAdd()
     }
 }

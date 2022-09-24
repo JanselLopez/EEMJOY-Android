@@ -1,6 +1,7 @@
 package com.jansellopez.eemjoy.ui.clients
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,8 +34,9 @@ class ClientsViewModel @Inject constructor(
             loading.postValue(true)
 
             val clientsUseCase = getClientsUseCase(city,zone,isNetDisponible,context)
-            if(!clientsUseCase.isNullOrEmpty())
-                users.postValue(clientsUseCase)
+
+            users.postValue(clientsUseCase)
+
 
             val periodUC = getPeriodUseCase(isNetDisponible,context)
             if (!clientsUseCase.isNullOrEmpty())
@@ -48,10 +50,11 @@ class ClientsViewModel @Inject constructor(
                 pushAllsLecturasUseCase(context)
 
             getAllLecturas()
+
             loading.postValue(false)
         }
     }
-    private fun getAllLecturas(){
+    fun getAllLecturas(){
         viewModelScope.launch {
             val list = mutableListOf<Lectura>()
             users.value!!.forEach {
