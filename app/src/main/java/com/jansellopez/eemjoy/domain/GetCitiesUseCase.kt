@@ -10,11 +10,11 @@ class GetCitiesUseCase @Inject constructor(
     private val repository: ClientRepository
 ){
     suspend operator fun invoke(isNetDisponible: Boolean,context: Context):List<City> {
-        val citiesList:List<City>
+        var citiesList:List<City>
         if(isNetDisponible) {
-            citiesList = repository.getCitiesFromApi(context)
-            repository.deleteAllCitiesFromDatabase()
-            repository.pushCitiesToDatabase(citiesList.map { it.toDomain() })
+                citiesList = repository.getCitiesFromApi(context)
+                repository.deleteAllCitiesFromDatabase()
+                repository.pushCitiesToDatabase(citiesList.map { it.toDomain() })
         }else
             citiesList = repository.getCitiesFromDataBase()
 

@@ -23,11 +23,11 @@
 
     <style name="Theme.EEMJOY.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="subheader1">
+    <style name="subheader1" parent="TextAppearance.AppCompat">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="subheader2">
+    <style name="subheader2" parent="TextAppearance.AppCompat">
         <item name="android:textSize">16sp</item>
     </style>
 

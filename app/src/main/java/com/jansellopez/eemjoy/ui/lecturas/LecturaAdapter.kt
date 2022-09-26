@@ -72,13 +72,13 @@ class LecturaAdapter(
                     l.lectura_anterior = before
                     l.lectura_actual = lectura!!.toInt()
                     l.kilovatios = lectura!!.toInt() - before
-                    lecturaViewModel.update(l,l.client_id,l.id_add?:0,counter.toInt())
+                    lecturaViewModel.update(l,l.client_id,l.id_add?:0,counter.toInt(),context)
                     notifyItemChanged(position)
 
                     for (i in position+1 until lecturas.size){
                         lecturas[i].lectura_anterior = lecturas[i-1].lectura_actual
                         lecturas[i].kilovatios = lecturas[i].lectura_actual - lecturas[i-1].lectura_actual
-                        lecturaViewModel.update(lecturas[i],lecturas[i].client_id,lecturas[i].id_add?:0,counter.toInt())
+                        lecturaViewModel.update(lecturas[i],lecturas[i].client_id,lecturas[i].id_add?:0,counter.toInt(),context)
                         notifyItemChanged(i)
                     }
 

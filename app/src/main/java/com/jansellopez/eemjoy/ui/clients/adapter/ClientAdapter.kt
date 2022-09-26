@@ -1,6 +1,7 @@
 package com.jansellopez.eemjoy.ui.clients.adapter
 
 import android.Manifest
+import android.R.attr
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -39,6 +40,12 @@ import android.net.Uri
 
 import androidx.core.content.ContextCompat.startActivity
 import java.io.File
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
+import android.R.attr.mimeType
+
+
+
 
 
 class ClientAdapter(
@@ -279,17 +286,22 @@ class ClientAdapter(
                                 }
                                 document.add(asteriscos)
                             }
+
                             document.close()
                             bottomSheetDialog.dismiss()
-                            val file =
-                                File(path)
-                            val target = Intent(Intent.ACTION_VIEW)
-                            target.setDataAndType(Uri.fromFile(file), "application/pdf")
-                            target.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-
-                            val intent = Intent.createChooser(target, context.resources.getString(R.string.open_pdf))
+                            val file = File(path)
+                            val install = Intent(Intent.ACTION_VIEW)
+                            install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                            val apkURI = FileProvider.getUriForFile(
+                                context,
+                                context.applicationContext
+                                    .packageName + ".provider", file
+                            )
+                            install.setDataAndType(apkURI, "application/pdf")
+                            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             try {
-                                context.startActivity(intent)
+                                install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                context.startActivity(install)
                             } catch (e: ActivityNotFoundException) {
                                 // Instruct the user to install a PDF reader here, or something
                                 CustomSnackBar(activity,coordinatorLayout).showError(context.resources.getString(R.string.error_guardando_el_pdf))

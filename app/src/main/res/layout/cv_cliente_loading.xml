@@ -64,6 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:text = "@string/ir"
+        android:textColor = "@color/white"
         android:backgroundTint = "?attr/colorAccent"
         />
 

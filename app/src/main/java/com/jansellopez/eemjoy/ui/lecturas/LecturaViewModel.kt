@@ -71,10 +71,19 @@ class LecturaViewModel @Inject constructor(
         }
     }
 
-    fun update(lectura: Lectura, clientId: Int,id:Int,numberCount: Int){
+    fun update(lectura: Lectura, clientId: Int,id:Int,numberCount: Int,context: Context){
         viewModelScope.launch {
             loading.postValue(true)
-            updateLecturaUseCase(lectura, LecturaAdd(id,lectura.configuracion_id,numberCount,lectura.kilovatios,lectura.lectura_anterior?:0))
+            lectura.tarifa_id = getTarifaOfLecturaUseCase(CheckConnect(context),context,lectura.kilovatios)
+            updateLecturaUseCase(lectura,
+                LecturaAdd(
+                    id =id,
+                    configuracion_id = lectura.configuracion_id,
+                    number_cont = numberCount,
+                    kilovatios = lectura.lectura_actual,
+                    lectura_anterior = lectura.lectura_anterior?:0
+                )
+            )
             lecturas.postValue(getLecturasUseCase(clientId)!!)
             loading.postValue(false)
         }
