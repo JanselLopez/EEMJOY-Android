@@ -86,12 +86,12 @@ class LecturasActivity : AppCompatActivity() {
 
         lecturaViewModel.loading.observe(this,{
             binding.progressCircular.isVisible = it
-            binding.btnUpload.isVisible = !it
+            /*binding.btnUpload.isVisible = !it*/
         })
 
-        binding.btnUpload.setOnClickListener {
+        /*binding.btnUpload.setOnClickListener {
             lecturaViewModel.pushAll(this)
-        }
+        }*/
 
     }
 

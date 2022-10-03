@@ -8,10 +8,10 @@
         />
 
     <item
-        android:left = "10dp"
-        android:right = "10dp"
-        android:bottom = "160dp"
-        android:top = "160dp"
+        android:left = "@dimen/horizontal_space"
+        android:right = "@dimen/horizontal_space"
+        android:bottom = "@dimen/vertical_space"
+        android:top = "@dimen/vertical_space"
         >
         <bitmap android:src="@drawable/copyright"/>
     </item>
