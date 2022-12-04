@@ -9,18 +9,13 @@ import javax.inject.Inject
 class GetClientsUseCase @Inject constructor(
     private val repository: ClientRepository
 ){
-    suspend operator fun invoke(city: Int, zone: Int, isNetDisponible: Boolean,context: Context):List<Client>{
-        var clients:List<Client>
+    suspend operator fun invoke(city: Int, zone: Int, isNetDisponible: Boolean,context: Context){
+        val clients:List<Client>
         if(isNetDisponible) {
                 clients = repository.getClientsFromApi(city, zone, context)
-                repository.deleteAllClientsFromDatabase()
                 repository.pushClientsToDatabase(clients.map { it.toDomain(city, zone) })
                 val lecturas = repository.getLecturasFromApi(zone, context)
-                repository.deleteAllLecturasFromDatabase()
                 repository.pushLecturasToDatabase(lecturas.map { it.toDomain() })
-        }else
-            clients = repository.getClientsFromDataBase(city, zone)
-
-        return  clients
+        }
     }
 }

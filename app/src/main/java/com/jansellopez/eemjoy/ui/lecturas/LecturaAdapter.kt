@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.jansellopez.eemjoy.R
 import com.jansellopez.eemjoy.data.model.Lectura
@@ -19,8 +20,9 @@ import java.util.*
 class LecturaAdapter(
     private val lecturas: List<Lectura>,
     private val lecturaViewModel: LecturaViewModel,
-    private val activity:Activity,
-    private val counter:String
+    private val activity: Activity,
+    private val counter: String,
+    private val isEmpty: Boolean
 ):RecyclerView.Adapter<LecturaAdapter.LecturaViewHolder>() {
 
     private lateinit var context: Context
@@ -36,18 +38,23 @@ class LecturaAdapter(
 
     override fun onBindViewHolder(holder: LecturaViewHolder, position: Int) {
         with(holder){
-            with(lecturas[position]){
-                binding.tvDate.text = lectura_actual.toString()
-                val kb = "$kilovatios ${context.resources.getString(R.string.kwh)}"
-                binding.tvKw.text = kb
-                if (agregada == 1)
-                    binding.fabEdit.isEnabled = false
+            with(lecturas[position]) {
+                if (!isEmpty && position == 0){
+                    binding.cvLectura.isVisible = false
+                    binding.cvLectura.setContentPadding(0,0,0,0)
+                    binding.tvDate.isVisible = false
+                    binding.fabEdit.isVisible = false
+                    binding.tvKw.isVisible = false
+                }else{
+                    binding.tvDate.text = lectura_actual.toString()
+                    val kb = "$kilovatios ${context.resources.getString(R.string.kwh)}"
+                    binding.tvKw.text = kb
+                    if (agregada == 1)
+                        binding.fabEdit.isEnabled = false
 
-                binding.fabEdit.setOnClickListener {
-                        if (position != 0)
-                            getLectura(this, lecturas[position- 1].lectura_actual,position)
-                        else
-                            getLectura(this, 0,position)
+                    binding.fabEdit.setOnClickListener {
+                        getLectura(this, lecturas[position- 1].lectura_actual,position)
+                    }
                 }
             }
         }
@@ -67,18 +74,18 @@ class LecturaAdapter(
             lectura = input.text.toString()
             val cal = Calendar.getInstance()
             Log.e("Fecha Actual","${cal.get(Calendar.DAY_OF_MONTH)}-${cal.get(Calendar.MONTH)}")
-                if(!lectura.isNullOrEmpty()){
+                if(lectura.isNotEmpty()){
 
                     l.lectura_anterior = before
-                    l.lectura_actual = lectura!!.toInt()
-                    l.kilovatios = lectura!!.toInt() - before
-                    lecturaViewModel.update(l,l.client_id,l.id_add?:0,counter.toInt(),context)
+                    l.lectura_actual = lectura.toInt()
+                    l.kilovatios = lectura.toInt() - before
+                    lecturaViewModel.update(l,l.client_id,l.id_add?:0,counter,context)
                     notifyItemChanged(position)
 
                     for (i in position+1 until lecturas.size){
                         lecturas[i].lectura_anterior = lecturas[i-1].lectura_actual
                         lecturas[i].kilovatios = lecturas[i].lectura_actual - lecturas[i-1].lectura_actual
-                        lecturaViewModel.update(lecturas[i],lecturas[i].client_id,lecturas[i].id_add?:0,counter.toInt(),context)
+                        lecturaViewModel.update(lecturas[i],lecturas[i].client_id,lecturas[i].id_add?:0,counter,context)
                         notifyItemChanged(i)
                     }
 

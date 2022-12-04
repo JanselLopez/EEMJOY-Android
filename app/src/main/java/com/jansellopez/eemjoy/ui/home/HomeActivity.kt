@@ -62,6 +62,7 @@ class HomeActivity : AppCompatActivity() {
             else
                 ActivityInfo.SCREEN_ORIENTATION_SENSOR
         })
+
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main, menu)

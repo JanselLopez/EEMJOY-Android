@@ -11,7 +11,7 @@ data class LecturaEntityAdd (
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name="id")var id:Int,
     @ColumnInfo(name="configuracion_id") val configuracion_id:Int,
-    @ColumnInfo(name="number_cont")val number_cont:Int,
+    @ColumnInfo(name="number_cont")val number_cont:String,
     @ColumnInfo(name="kilovatios")val kilovatios:Int,
     @ColumnInfo(name="lectura_anterior")val lectura_anterior:Int
 )

@@ -13,7 +13,6 @@ class GetCitiesUseCase @Inject constructor(
         var citiesList:List<City>
         if(isNetDisponible) {
                 citiesList = repository.getCitiesFromApi(context)
-                repository.deleteAllCitiesFromDatabase()
                 repository.pushCitiesToDatabase(citiesList.map { it.toDomain() })
         }else
             citiesList = repository.getCitiesFromDataBase()

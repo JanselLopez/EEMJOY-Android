@@ -16,6 +16,7 @@ data class ClientEntity(
     @ColumnInfo(name="numberCount")val numberCount:String,
     @ColumnInfo(name = "city")val city:Int,
     @ColumnInfo(name = "address")val address:Int,
+    @ColumnInfo(name = "numberCount_integer")val numberCount_integer:Int,
 )
 
-fun Client.toDomain(city: Int,zone:Int) = ClientEntity(id, firstName, firstLastName, secondLastName, numberCount,city,zone)
+fun Client.toDomain(city: Int,zone:Int) = ClientEntity(id, firstName?:"", firstLastName?:"", secondLastName?:"", numberCount,city,zone,(numberCount.filterNot { !it.isDigit() }).toInt())

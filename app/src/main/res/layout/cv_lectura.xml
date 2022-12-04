@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     app:contentPadding="10dp"
     app:cardCornerRadius="0dp"
+    android:id = "@+id/cvLectura"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout

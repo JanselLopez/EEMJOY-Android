@@ -26,9 +26,10 @@ class HomeViewModel @Inject constructor(
             val citiesUseCase = getCitiesUseCase(isNetDisponible,context)
             if (!citiesUseCase.isNullOrEmpty())
                 cities.postValue(citiesUseCase)
-            loading.postValue(false)
             if (isNetDisponible)
                 pushAllsLecturasUseCase(context)
+            loading.postValue(false)
+
         }
     }
 }

@@ -5,7 +5,7 @@ import com.jansellopez.eemjoy.data.model.Period
 
 data class LecturaNetworkAdd (
     val configuracion_id:Int,
-    val number_cont:Int,
+    val number_cont:String,
     val kilovatios:Int,
     val lectura_anterior:Int
 )

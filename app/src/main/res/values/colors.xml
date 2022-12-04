@@ -13,6 +13,8 @@
     <color name="red">#bc0734</color>
     <color name="other_red">#F52D51</color>
     <color name="yellow">#ff9900</color>
+    <color name="transparent_yellow">#66FFE600</color>
+    <color name="light_green">#4CAF50</color>
     <color name="green">#006600</color>
     <color name="gray">#6D7A84</color>
     <color name="dark_gray">#313131</color>

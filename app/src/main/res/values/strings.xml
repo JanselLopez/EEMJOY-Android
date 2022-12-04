@@ -41,7 +41,7 @@
     <string name="adress">Dirección</string>
     <string name="femenino">Femenino</string>
     <string name="masculino">Masculino</string>
-
+    <string name="exacto">Búsqueda exacta</string>
     <string name="born_date">Fecha de Nacimiento</string>
     <string name="hola">Hola,</string>
     <string name="select_client">Selecciona la localidad</string>
@@ -83,5 +83,8 @@
     <string name="error_guardando_el_pdf">Error guardando el Pdf</string>
     <string name="introduce_some_value">Introduzca algun valor</string>
     <string name="outside">Se encuentra fuera de periodo</string>
+    <string name="instale_una_app">Instale un lector de pdf</string>
+    <string name="instala">Instale una app para esta operación</string>
+    <string name="lectura_menor_q_anterior">La lectura actual no puede ser menor que la lectura anterior</string>
 
 </resources>

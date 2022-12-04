@@ -30,17 +30,16 @@
             android:layout_height="match_parent"
             android:layout_gravity="end|center"
             />
-        <!--
+
         <androidx.appcompat.widget.AppCompatImageButton
             android:id = "@+id/btnUpload"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src = "@drawable/ic_upload_svgrepo_com"
+            android:src = "@drawable/ic_baseline_local_printshop_24"
             android:background="@android:color/transparent"
             android:layout_gravity="end|center"
             android:layout_margin = "10dp"
             />
-            -->
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView

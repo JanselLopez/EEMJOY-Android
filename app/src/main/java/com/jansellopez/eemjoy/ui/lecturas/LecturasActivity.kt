@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -15,16 +14,16 @@ import com.jansellopez.eemjoy.R
 import com.jansellopez.eemjoy.data.model.Lectura
 import com.jansellopez.eemjoy.databinding.ActivityLecturasBinding
 import com.jansellopez.eemjoy.ui.clients.ClientsActivity
-import com.jansellopez.eemjoy.ui.clients.ClientsViewModel
 import cu.jansellopez.custom_snackbars.CustomSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.properties.Delegates
 import android.view.MotionEvent
-import android.view.View
 import androidx.core.view.isVisible
+import com.jansellopez.eemjoy.core.PrintTarifa
+import com.jansellopez.eemjoy.data.model.Client
+import com.jansellopez.eemjoy.data.model.Period
 
 
 @AndroidEntryPoint
@@ -48,10 +47,32 @@ class LecturasActivity : AppCompatActivity() {
         binding.toolbar.subtitle = bundle.getString("name")
         val clientId = bundle.getInt("clientId")
         zone = bundle.getInt("zone")
-        city = bundle!!.getInt("city")
+        city = bundle.getInt("city")
         zoneName = bundle.getString("zone_name")
 
-        lecturaViewModel.onCreate(clientId)
+        val client = Client(
+            clientId,
+            bundle.getString("firstName",""),
+            bundle.getString("firstLastName",""),
+            bundle.getString("secondLastName",""),
+            bundle.getString("counter","")
+        )
+        val calPay: Calendar = Calendar.getInstance()
+        calPay.timeInMillis = bundle.getLong("pf_paymentDate")
+        val calBegin: Calendar = Calendar.getInstance()
+        calBegin.timeInMillis = bundle.getLong("pf_beginDate")
+        val calEnd: Calendar = Calendar.getInstance()
+        calEnd.timeInMillis = bundle.getLong("pf_endDate")
+
+        val periodFull = Period(
+            bundle.getInt("pf_id"),
+            bundle.getString("pf_title",""),
+            paymentDate = calPay,
+            beginDate = calBegin,
+            endDate =calEnd
+        )
+
+        lecturaViewModel.onCreate(clientId, this)
 
         binding.fabAdd.setOnTouchListener { view, event ->
             when (event.action) {
@@ -79,19 +100,33 @@ class LecturasActivity : AppCompatActivity() {
         binding.rvLecturas.layoutManager = LinearLayoutManager(this)
 
         lecturaViewModel.lecturas.observe(this,{
-            binding.rvLecturas.adapter = LecturaAdapter(it,lecturaViewModel,this,
-                (bundle!!.getString("counter")?:0) as String
-            )
+            lecturaViewModel.tarifas.observe(this, { tarifas ->
+                lecturaViewModel.lastLectura.observe(this,{ last->
+
+                binding.rvLecturas.adapter = LecturaAdapter(
+                    listOf(last)+it, lecturaViewModel, this,
+                    (bundle.getString("counter") ?: 0) as String, it.isEmpty()
+                )
+                binding.btnUpload.setOnClickListener { _ ->
+                    PrintTarifa(
+                        this,
+                        this,
+                        client = client,
+                        zoneName ?: "",
+                        periodFull = periodFull,
+                        it,
+                        tarifas = tarifas,
+                        binding.coordinator
+                    ).print()
+                }
+                })
+            })
         })
 
         lecturaViewModel.loading.observe(this,{
             binding.progressCircular.isVisible = it
-            /*binding.btnUpload.isVisible = !it*/
+            binding.btnUpload.isVisible = !it
         })
-
-        /*binding.btnUpload.setOnClickListener {
-            lecturaViewModel.pushAll(this)
-        }*/
 
     }
 
@@ -127,7 +162,7 @@ class LecturasActivity : AppCompatActivity() {
                     val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss.zzz")
                     val actualDate: String = dateFormat.format(date)
                     System.currentTimeMillis()
-
+                    if(lecturaViewModel.lastLectura.value!!.lectura_actual <=lectura!!.toInt()){
                     lecturaViewModel.pushLectura(
                         Lectura(
                             lecturaViewModel.lastLectura.value!!.id + 1,
@@ -144,10 +179,11 @@ class LecturasActivity : AppCompatActivity() {
                             0,
                             0
                         ), this,
-                        intent.extras!!.getString("counter")!!.toInt(),
+                        intent.extras!!.getString("counter")!!,
                         clientId
-                    ,this,
-                        binding.coordinator)
+                    )}
+                    else
+                        CustomSnackBar(this,binding.coordinator).showError(resources.getString(R.string.lectura_menor_q_anterior))
                 }else
                     CustomSnackBar(this,binding.coordinator).showError(resources.getString(R.string.introduce_some_value))
             }else

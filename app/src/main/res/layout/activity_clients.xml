@@ -80,6 +80,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvUser" />
 
                 <androidx.cardview.widget.CardView
+                    android:id = "@+id/cvSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -99,6 +100,9 @@
                         android:layout_height="wrap_content"
                         app:searchIcon="@drawable/ic_baseline_search_24"
                         app:queryHint="@string/name_or_counter"
+                        android:showAsAction="always"
+                        app:closeIcon="@drawable/ic_baseline_cancel_24"
+                        android:iconifiedByDefault = "true"
                         android:theme="@style/Client.SearchView"
                         />
                 </androidx.cardview.widget.CardView>
@@ -115,11 +119,23 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
                 app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-                />
+                >
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id = "@+id/scExact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exacto"
+                    android:layout_gravity="end"
+                    android:textColor = "@color/white"
+                    android:layout_marginHorizontal="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvClients"

@@ -3,7 +3,6 @@ buildscript {
     ext.hilt_version = "2.41"
     repositories {
         maven { url 'http://nexus.prod.uci.cu/repository/maven-android'
-
             allowInsecureProtocol = true}
         maven { url 'http://maven.prod.uci.cu/nexus/content/repositories/central/'
             allowInsecureProtocol = true}
@@ -24,8 +23,6 @@ buildscript {
         classpath "com.android.tools.build:gradle:7.0.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 

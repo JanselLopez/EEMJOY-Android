@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:id="@+id/constraint"
     android:layout_marginHorizontal="10dp"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -69,5 +70,25 @@
         android:textColor = "@color/white"
         android:backgroundTint = "?attr/colorAccent"
         />
+
+    <androidx.cardview.widget.CardView
+        android:id = "@+id/cvNoti"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:cardBackgroundColor="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="15dp"
+        >
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id = "@+id/tvNoti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text = "10"
+            android:layout_gravity = "center"
+            android:textColor = "@color/white"
+            android:textSize = "10sp"
+            />
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

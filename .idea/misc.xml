@@ -7,11 +7,14 @@
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.17993421052631578" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/back_collapsing.xml" value="0.24074074074074073" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/bottom_sheet_back.xml" value="0.2890625" />
+        <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/circle_notification.xml" value="0.258" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/cv_contador.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.17993421052631578" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.1825657894736842" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.17993421052631578" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/ic_city_svgrepo_com.xml" value="0.1825657894736842" />
+        <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/ic_logo.xml" value="0.18078175895765472" />
+        <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/ic_logo_adobe_express.xml" value="0.10032894736842106" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/ic_logo_eemjoy_svg.xml" value="0.17993421052631578" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/ic_menu_camera.xml" value="0.1825657894736842" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.1825657894736842" />
@@ -20,10 +23,10 @@
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/drawable/splash_background.xml" value="0.1" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.262890625" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout-w936dp/activity_login.xml" value="0.2046875" />
-        <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/activity_clients.xml" value="0.25" />
+        <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/activity_clients.xml" value="0.33" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/activity_lecturas.xml" value="0.25" />
-        <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/activity_login.xml" value="0.18" />
+        <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/activity_main.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/activity_register.xml" value="0.18" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/activity_splash.xml" value="0.1" />
@@ -33,7 +36,7 @@
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/checked.xml" value="0.33" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/content_main.xml" value="0.14" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/cv_city.xml" value="0.25" />
-        <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/cv_city_loading.xml" value="0.33" />
+        <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/cv_city_loading.xml" value="0.18" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/cv_cliente.xml" value="0.25" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/cv_cliente_loading.xml" value="0.22" />
         <entry key="..\:/Users/Jansel/AndroidStudioProjects/EEMJOY/app/src/main/res/layout/cv_lectura.xml" value="0.25" />

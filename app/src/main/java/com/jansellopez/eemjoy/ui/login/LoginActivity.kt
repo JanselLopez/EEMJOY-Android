@@ -5,6 +5,9 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -52,21 +55,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
-            if(binding.tvEmail.text.toString().isNotEmpty() && binding.tvPassword.text.toString().isNotEmpty()) {
-                try {
-                    loginViewModel.login(
-                        User(
-                            binding.tvEmail.text.toString(),
-                            binding.tvPassword.text.toString(),
-                        ),
-                        this,
-                        binding.coordinator,
-                        CheckConnect(this)
-                    )
-                }catch (e:Exception){
-                    Log.e("Error","Serve")
-                }
-            }
+            login()
         }
 
 
@@ -97,6 +86,33 @@ class LoginActivity : AppCompatActivity() {
             else
                 ActivityInfo.SCREEN_ORIENTATION_SENSOR
         })
+        binding.tvPassword.setOnEditorActionListener { _, actionId, event ->
+            if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
+                login()
+            }
+            false
+        }
+
+    }
+
+    fun login(){
+        if (binding.tvEmail.text.toString()
+                .isNotEmpty() && binding.tvPassword.text.toString().isNotEmpty()
+        ) {
+            try {
+                loginViewModel.login(
+                    User(
+                        binding.tvEmail.text.toString(),
+                        binding.tvPassword.text.toString(),
+                    ),
+                    this,
+                    binding.coordinator,
+                    CheckConnect(this)
+                )
+            } catch (e: Exception) {
+                Log.e("Error", "Serve")
+            }
+        }
     }
 
     override fun onBackPressed() {

@@ -18,7 +18,9 @@ data class Lectura(
     val created_at:String,
     var agregada:Int,
     var id_add:Int?
-)
+):Comparable<Lectura> {
+    override fun compareTo(other: Lectura): Int = if(client_id<other.client_id) -1 else if(client_id>other.client_id) 1 else 0
+}
 
-fun LecturaNetwork.toDomain() = Lectura(id, client_id, address_id, configuracion_id, lectura_anterior, state, lectura_actual, kilovatios, tarifa_id, created_by, created_at,1,0)
+fun LecturaNetwork.toDomain() = Lectura(id, client_id, address_id, configuracion_id, lectura_anterior, state, lectura_actual, kilovatios, tarifa_id, created_by, created_at,1,null)
 fun LecturaEntity.toDomain() = Lectura(id, client_id, address_id, configuracion_id, lectura_anterior, state, lectura_actual, kilovatios, tarifa_id, created_by, created_at,agregada,id_add)

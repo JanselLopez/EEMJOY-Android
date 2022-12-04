@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-
 class ClientRepository @Inject constructor(
     private val userService: UserService,
     private val userDao: ClientDao
@@ -36,6 +35,7 @@ class ClientRepository @Inject constructor(
 
     suspend fun deleteAllZonesFromDatabase() = userDao.clearZones()
 
+    //clients
     suspend fun getClientsFromApi(city: Int, zone: Int,context:Context):List<Client> = userService.getClients(TokenRepository.getToken(),city,zone,context).map { it.toDomain() }
 
     suspend fun getClientsFromDataBase(city:Int,zone:Int):List<Client> = userDao.getAllClients(city,zone)!!.map { it.toDomain() }
@@ -44,6 +44,10 @@ class ClientRepository @Inject constructor(
 
     suspend fun deleteAllClientsFromDatabase() = userDao.clearClients()
 
+    suspend fun getClientsByNameOrCount(value: String):List<Client> = userDao.getClientsByNameOrCount(value)!!.map { it.toDomain() }
+
+    suspend fun getClientsByNameOrCountExactly(value: String):List<Client> = userDao.getClientsByNameOrCountExactly(value)!!.map { it.toDomain() }
+    //lectura
     suspend fun getLecturasFromApi(zone: Int,context:Context):List<Lectura> = userService.getLecturas(TokenRepository.getToken(),zone,context).map { it.toDomain() }
 
     suspend fun getLecturasFromDataBase(clientId:Int):List<Lectura> = userDao.getAllLecturas(clientId)!!.map { it.toDomain() }
@@ -113,4 +117,6 @@ class ClientRepository @Inject constructor(
 
     suspend fun getMaxIdForAdd() = userDao.getMaxIdOfLectForAdd()?:1
 
+    //lecturas add
+    suspend fun deleteLecturaAdd(id_add:Int) = userDao.deleteLecturaAdd(id_add)
 }

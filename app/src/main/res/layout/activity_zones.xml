@@ -60,19 +60,7 @@
                     />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/appCompatTextView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/welcome"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="30dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvUser" />
-
-                <androidx.appcompat.widget.AppCompatTextView
+                    android:id = "@+id/locality"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -83,7 +71,32 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/appCompatTextView6" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvUser" />
+                <androidx.cardview.widget.CardView
+                    android:id = "@+id/cvSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/select_client"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginHorizontal="20dp"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/locality">
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/svClient"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:searchIcon="@drawable/ic_baseline_search_24"
+                        app:queryHint="@string/name_or_counter"
+                        app:closeIcon="@drawable/ic_baseline_cancel_24"
+                        android:theme="@style/Client.SearchView"
+                        />
+                </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -36,6 +36,12 @@ interface ClientDao {
     @Query("DELETE FROM clients_table")
     suspend fun clearClients()
 
+    @Query("SELECT * FROM clients_table WHERE firstName LIKE '%' || :value || '%' or firstLastName LIKE '%' || :value || '%' or secondLastName LIKE '%' || :value || '%' or numberCount LIKE '%' || :value || '%' order by numberCount_integer limit 100")
+    suspend fun getClientsByNameOrCount(value:String):List<ClientEntity>?
+
+    @Query("SELECT * FROM clients_table WHERE firstName LIKE :value or firstLastName LIKE :value or secondLastName LIKE :value or numberCount LIKE :value")
+    suspend fun getClientsByNameOrCountExactly(value:String):List<ClientEntity>?
+
     //lecturas
     @Query("SELECT * FROM lecturas_table WHERE client_id=:client_id and state = 'pendiente'")
     suspend fun getAllLecturas(client_id:Int):List<LecturaEntity>?
@@ -54,6 +60,9 @@ interface ClientDao {
 
     @Update
     suspend fun updateLecturas(lecturaEntity: LecturaEntity)
+
+    @Query("DELETE FROM lecturas_table WHERE id_add=:id_add")
+    suspend fun deleteLecturaAdd(id_add:Int)
 
     //lecturas for add
     @Query("SELECT * FROM lecturas_add_table")

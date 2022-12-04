@@ -15,7 +15,6 @@ class GetZonesUseCase @Inject constructor(
         val repoZones:List<Zone>
         if (isNetDisponible){
             repoZones =repository.getZones(context)
-            repository.deleteAllZonesFromDatabase()
             repository.pushZonesToDatabase(repoZones.map { it.toDomain() })
         }else
             repoZones = repository.getZonesFromDataBase()

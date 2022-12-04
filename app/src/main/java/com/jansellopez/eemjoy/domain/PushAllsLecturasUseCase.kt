@@ -16,7 +16,9 @@ class PushAllsLecturasUseCase @Inject constructor(
                     lecturasAdd.forEach {
                     val response = repository.pushLecturaToApi(it,context)
                     Toast.makeText(context,response.report,Toast.LENGTH_LONG).show()
+                        repository.deleteLecturaAdd(it.id)
                 }
+
         repository.clearLecturasAdd()
     }
 }

@@ -6,7 +6,7 @@ import com.jansellopez.eemjoy.data.network.modelnetwork.LecturaNetworkAdd
 class LecturaAdd (
     var id:Int,
     val configuracion_id:Int,
-    val number_cont:Int,
+    val number_cont:String,
     val kilovatios:Int,
     val lectura_anterior:Int
     )
